@@ -103,7 +103,7 @@ System.out.println("Hello, world!");  // 第1行、第3到第5行、第7行高�
       ```
       [OomAdjuster.java#3125-L3131](https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#3125-L3131)
 
-在 Jetbrains IDE 中可搜索插件 [MarkdownQuote](markdownquote.toscl.com)，可以一键简单Copy复制上述的格式。
+在 Jetbrains IDE 中可搜索插件 [MarkdownQuote](https://plugins.jetbrains.com/plugin/22311-markdownquote)，可以一键简单Copy复制上述的格式。
 
 
 ## More Examples
