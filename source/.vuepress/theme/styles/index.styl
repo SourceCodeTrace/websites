@@ -10,3 +10,17 @@ body:lang(zh-hans)
 
 body:lang(zh-hant)
   font-family Roboto, 'Noto Sans TC', sans-serif
+
+// markdown-it-quote change style for fence.
+div[class*="language-"].line-numbers-source pre{
+    padding-bottom:0;
+    margin-bottom:0;
+}
+
+.gist-meta-quote{
+  font-size:12px;padding: 10px;overflow: hidden;color: white;border-radius: 0 0 6px 6px;
+}
+
+.gist-meta-quote a{
+  float: right;color: white;text-decoration: underline;
+}

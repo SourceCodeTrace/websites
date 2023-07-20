@@ -9,6 +9,12 @@ var timestampCache = {}
 module.exports = {
   base: '/',
 title: 'SourceCodeTrace',
+  markdown: {
+    extendMarkdown: md => {
+      const markdownQuote = require('markdown-it-quote')
+      md.use(markdownQuote);
+    }
+  },
   head: [
   ],
   locales: {
