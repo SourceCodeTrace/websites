@@ -16,6 +16,7 @@ title: 'SourceCodeTrace',
     }
   },
   head: [
+    ['link', { rel: 'icon', type: 'image/png', size: '16x16', href: '/images/favicon.ico' }]
   ],
   locales: {
     '/': {
