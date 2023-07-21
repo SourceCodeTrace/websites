@@ -4,37 +4,42 @@ heroImage: /logo.png
 actionText: Learn more
 actionLink: /introduction.html
 features:
-  - title: Use system APIs elegantly
-    details: Forget about root shell, you can use APIs with higher privileges "directly". Also, Shizuku is significantly faster than shell.
-  - title: Supports adb usage
-    details: If your "root required app" only needs adb permission, you can easily expand the audience by using Shizuku.
-  - title: Save your time
-    details: Shizuku has detailed documentation to guide users. Only you need to do is to let the users install Shizuku.
+- title: Markdown 新标准
+  details: 通过新标准定义，让代码块可包含语言、代码起始行数、高亮位置、以及代码来源地址，让您的文章更具可信度
+- title: 多平台解析支持
+  details: 开源 markdown-it 支持插件，vurepress 支持, sublime 解析插件支持
+- title: Jetbrain一键引用标准代码块 [MarkdownQuote]()
+  details: 通过Jetbrain IDE 分析源码，通过 MarkdownQuote 插件右键直接复制符合 Markdown 新标准的代码块
 footer: Copyright © 2023 SourceCodeTrace
 ---
 
-### As Easy as you are a system app
+### 引入代码块的 Markdown 新标准
 
-```text
-    ```js {3-12} {5-10} (http://www.baidu.com)
-    console.log("test")
-    console.log("test")
-    console.log("test")
-    console.log("test")
-    console.log("test")
-    console.log("test")
-    console.log("test")
-    console.log("test")
-    console.log("test")
-    console.log("test")
-    console.log("test")
-    console.log("test")
-    console.log("test")
-    console.log("test")
-    ```
+````markdown
+```java {3125-3131} {3126-3130} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3125-L3131)
+        // Use current adjustment when freezing, set adjustment when unfreezing.
+        if (state.getCurAdj() >= ProcessList.CACHED_APP_MIN_ADJ && !opt.isFrozen()
+                && !opt.shouldNotFreeze()) {
+            mCachedAppOptimizer.freezeAppAsyncLSP(app);
+        } else if (state.getSetAdj() < ProcessList.CACHED_APP_MIN_ADJ) {
+            mCachedAppOptimizer.unfreezeAppLSP(app, oomAdjReason);
+        }
+    }
+```
+````
+
+```java {3125-3131} {3126-3130} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3125-L3131)
+        // Use current adjustment when freezing, set adjustment when unfreezing.
+        if (state.getCurAdj() >= ProcessList.CACHED_APP_MIN_ADJ && !opt.isFrozen()
+                && !opt.shouldNotFreeze()) {
+            mCachedAppOptimizer.freezeAppAsyncLSP(app);
+        } else if (state.getSetAdj() < ProcessList.CACHED_APP_MIN_ADJ) {
+            mCachedAppOptimizer.unfreezeAppLSP(app, oomAdjReason);
+        }
+    }
 ```
 
 ::: tip
-
-There a few more steps to do, like checking permission or if Shizuku is running.
+- 点击 **view raw** 直接跳转到代码块对应的具体来源（分支、版本、位置、作者等）  
+- JetBrain IDE中可以通过 MarkdownQuote 插件自动生成引用
 :::

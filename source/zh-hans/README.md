@@ -16,7 +16,7 @@ footer: Copyright © 2023 SourceCodeTrace
 ### 引入代码块的 Markdown 新标准
 
 ````markdown
-```java {3125-3131} {3126-3130} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#3125-L3131)
+```java {3125-3131} {3126-3130} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3125-L3131)
         // Use current adjustment when freezing, set adjustment when unfreezing.
         if (state.getCurAdj() >= ProcessList.CACHED_APP_MIN_ADJ && !opt.isFrozen()
                 && !opt.shouldNotFreeze()) {
@@ -28,7 +28,7 @@ footer: Copyright © 2023 SourceCodeTrace
 ```
 ````
 
-```java {3125-3131} {3126-3130} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#3125-L3131)
+```java {3125-3131} {3126-3130} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3125-L3131)
         // Use current adjustment when freezing, set adjustment when unfreezing.
         if (state.getCurAdj() >= ProcessList.CACHED_APP_MIN_ADJ && !opt.isFrozen()
                 && !opt.shouldNotFreeze()) {

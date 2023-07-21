@@ -47,7 +47,7 @@ System.out.println("Hello, world!");  // 第1行、第3到第5行、第7行高�
 - 完整格式
   - 写法 
     ````markdown
-    ```java {3125-3131} {3129,3131} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#3125-L3131)
+    ```java {3125-3131} {3129,3131} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3125-L3131)
             // Use current adjustment when freezing, set adjustment when unfreezing.
             if (state.getCurAdj() >= ProcessList.CACHED_APP_MIN_ADJ && !opt.isFrozen()
                     && !opt.shouldNotFreeze()) {
@@ -59,7 +59,7 @@ System.out.println("Hello, world!");  // 第1行、第3到第5行、第7行高�
     ```
     ````
   - 效果
-    ```java {3125-3131} {3129,3131} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#3125-L3131)
+    ```java {3125-3131} {3129,3131} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3125-L3131)
             // Use current adjustment when freezing, set adjustment when unfreezing.
             if (state.getCurAdj() >= ProcessList.CACHED_APP_MIN_ADJ && !opt.isFrozen()
                     && !opt.shouldNotFreeze()) {
@@ -88,7 +88,7 @@ System.out.println("Hello, world!");  // 第1行、第3到第5行、第7行高�
               }
           }
       ```
-      [OomAdjuster.java#3125-L3131](https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#3125-L3131)
+      [OomAdjuster.java#L3125-L3131](https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3125-L3131)
       ````
     - 效果
       ```java
@@ -101,7 +101,7 @@ System.out.println("Hello, world!");  // 第1行、第3到第5行、第7行高�
               }
           }
       ```
-      [OomAdjuster.java#3125-L3131](https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#3125-L3131)
+      [OomAdjuster.java#L3125-L3131](https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3125-L3131)
 
 在 Jetbrains IDE 中可搜索插件 [MarkdownQuote](https://plugins.jetbrains.com/plugin/22311-markdownquote)，可以一键简单Copy复制上述的格式。
 
@@ -110,7 +110,7 @@ System.out.println("Hello, world!");  // 第1行、第3到第5行、第7行高�
 
 - wrap line 3125 to 3131, link the url
 ````markdown
-```java {3125-3131} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#3125-L3131)
+```java {3125-3131} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3125-L3131)
         // Use current adjustment when freezing, set adjustment when unfreezing.
         if (state.getCurAdj() >= ProcessList.CACHED_APP_MIN_ADJ && !opt.isFrozen()
                 && !opt.shouldNotFreeze()) {
@@ -121,7 +121,7 @@ System.out.println("Hello, world!");  // 第1行、第3到第5行、第7行高�
     }
 ```
 ````
-```java {3125-3131} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#3125-L3131)
+```java {3125-3131} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3125-L3131)
         // Use current adjustment when freezing, set adjustment when unfreezing.
         if (state.getCurAdj() >= ProcessList.CACHED_APP_MIN_ADJ && !opt.isFrozen()
                 && !opt.shouldNotFreeze()) {
@@ -134,7 +134,7 @@ System.out.println("Hello, world!");  // 第1行、第3到第5行、第7行高�
 
 - just link the url
 ````markdown
-```java (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#3125-L3131)
+```java (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3125-L3131)
         // Use current adjustment when freezing, set adjustment when unfreezing.
         if (state.getCurAdj() >= ProcessList.CACHED_APP_MIN_ADJ && !opt.isFrozen()
                 && !opt.shouldNotFreeze()) {
@@ -145,7 +145,7 @@ System.out.println("Hello, world!");  // 第1行、第3到第5行、第7行高�
     }
 ```
 ````
-```java (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#3125-L3131)
+```java (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3125-L3131)
         // Use current adjustment when freezing, set adjustment when unfreezing.
         if (state.getCurAdj() >= ProcessList.CACHED_APP_MIN_ADJ && !opt.isFrozen()
                 && !opt.shouldNotFreeze()) {
