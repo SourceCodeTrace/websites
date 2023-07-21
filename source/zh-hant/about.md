@@ -172,7 +172,7 @@ SourceCodeTrace（源代码追溯）这个组织名称可以传达以下含义�
 
 ### Logo的设计
 
-<img src="logo.png" alt="logo.png" style="width: 20%;">
+![](/logo.png)
 
 描述SourceCodeTrace组织的可能的logo设计方案：
 Logo设计：
