@@ -88,7 +88,7 @@ title: 'SourceCodeTrace',
     repo: 'https://github.com/SourceCodeTrace/websites',
     docsRepo: 'https://github.com/SourceCodeTrace/websites',
     docsDir: 'source',
-    editLinks: true
+    editLinks: false
   },
   plugins: [
     [

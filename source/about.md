@@ -1,19 +1,19 @@
-# 关于可追溯代码来源的Markdown设计
-![logo_origin.png](./.vuepress/public/images/logo_origin.png)
+# 关于推动可追溯代码来源的计划
+![logo_origin.png](/images/logo_origin.png)
 
 ## 缘由
-  现在互联网上，很多技术博客和文章都会引入一段代码写帮助读者理解技术思路，或者是一些用来记录自己对某个大型模块的原理分析和理解， 
-随着版本管理以及技术的变化，很多历史文章，在读到精髓的时候，你会发现引入的代码块没有来源，让你不能对这个思路进行一个完整的了解，没有达到抛砖引玉的效果。
-如果通过在博客写的过程中，引入对应项目以及版本，行号等信息，后续的读者，通过通读源码也能够进行深入的自我学习。
+  在互联网上，很多技术博客和文章引入代码段来帮助读者理解技术思路或记录对某个大型模块的原理分析和理解。然而，由于版本管理和技术变化，很多历史文章在读者读到精髓时，发现引入的代码块没有来源信息，导致不能对这个思路进行完整的了解，影响了读者的学习效果。
 
-随后，我通过和 chatGpt 聊天，询问了一下在博客中引入代码块，但是不引入来源会导致哪些问题：
+和ChatGpt 在关于这个问题上，做了一番详细的讨论，由此萌发了让我推动代码可溯源的动力。
 
-它给了我一个详细的答案：
+:::tip
 在博客或文章中引入代码块但没有引入代码的来源可能导致以下问题：
 - 缺乏参考和引用：不提供代码的来源将使读者难以查找和验证代码的准确性和可靠性。读者可能无法判断代码的作者、代码的版本或其他相关信息。
 - 侵权问题：如果你从其他来源复制了代码但没有引用或提及原始作者或代码来源，这可能构成侵权行为，违反了知识产权法律和道德规范。
 - 可信度和可复现性问题：提供代码的来源可以增强博客或文章的可信度。读者可以参考原始来源来验证代码，并获得更多的上下文信息。此外，如果读者想要在自己的环境中复现代码，代码的来源可以提供必要的指导和依赖信息。
+- 
 为了解决这些问题，建议在博客或文章中引入代码块时，尽量提供代码的来源信息。这可以通过添加注释、链接到代码仓库或引用出处等方式来实现。这样可以提供更完整的信息，增加文章的可信度，同时尊重代码作者的权益。
+:::
 
 ## 差异
 ### 传统的Markdown语法
@@ -42,11 +42,11 @@ System.out.println("Hello, world!");  // 第1行、第3到第5行、第7行高�
     有人对此有一些建议 [Allow to highlight lines in a code block (github flavored markdown) #42489](https://github.com/orgs/community/discussions/42489)
   - Github permalink
       github提供一种可以支持高亮以及版本信息的永久链接，给这个项目提供了思路，通过 Shift 可以多选行数，然后右击选择 permalink(永久链接).
-      ![github_permalink.png](./.vuepress/public/images/github_permalink.png)
+      ![github_permalink.png](/images/github_permalink.png)
       [OomAdjuster.java#L3127-L3129](https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3127-L3129)
 
 ### 新的标准定义
-以下是和 chatgpt 讨论的过程：
+和 ChatGpt 讨论如何设计新的标准过程中，对于新的标准定义，它也持续为了输出了想法：
 
 - 设计一个引入链接的代码块
 可以考虑以下格式：
@@ -79,41 +79,42 @@ public class HelloWorld {
 
 请注意，这只是一种示例设计，具体的实现方式可能因你使用的Markdown解析器或编辑器而有所不同。建议查阅你所使用的工具的文档，以了解是否支持在代码块中同时指定起始行和高亮行，并查找相应的语法或插件来实现你的需求。
 
-#### 最终的定义
+## 实现
+### 完整定义
 ````markdown
 ```语言 {起始行-结束行} {高亮起始行-高亮结束行} (LINK)
 // 代码内容
 ````
 
-````markdown
-```java {3125-3131} {3126-3130} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3125-L3131)
-        // Use current adjustment when freezing, set adjustment when unfreezing.
-        if (state.getCurAdj() >= ProcessList.CACHED_APP_MIN_ADJ && !opt.isFrozen()
-                && !opt.shouldNotFreeze()) {
-            mCachedAppOptimizer.freezeAppAsyncLSP(app);
-        } else if (state.getSetAdj() < ProcessList.CACHED_APP_MIN_ADJ) {
-            mCachedAppOptimizer.unfreezeAppLSP(app, oomAdjReason);
-        }
-    }
-```
-````
+- 例子
+  - 完整写法
+  ````markdown
+  ```java {3125-3131} {3126-3130} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3125-L3131)
+          // Use current adjustment when freezing, set adjustment when unfreezing.
+          if (state.getCurAdj() >= ProcessList.CACHED_APP_MIN_ADJ && !opt.isFrozen()
+                  && !opt.shouldNotFreeze()) {
+              mCachedAppOptimizer.freezeAppAsyncLSP(app);
+          } else if (state.getSetAdj() < ProcessList.CACHED_APP_MIN_ADJ) {
+              mCachedAppOptimizer.unfreezeAppLSP(app, oomAdjReason);
+          }
+      }
+  ```
+  ````
+  - 效果
+  ```java {3125-3131} {3126-3130} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3125-L3131)
+          // Use current adjustment when freezing, set adjustment when unfreezing.
+          if (state.getCurAdj() >= ProcessList.CACHED_APP_MIN_ADJ && !opt.isFrozen()
+                  && !opt.shouldNotFreeze()) {
+              mCachedAppOptimizer.freezeAppAsyncLSP(app);
+          } else if (state.getSetAdj() < ProcessList.CACHED_APP_MIN_ADJ) {
+              mCachedAppOptimizer.unfreezeAppLSP(app, oomAdjReason);
+          }
+      }
+  ```
 
-```java {3125-3131} {3126-3130} (https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3125-L3131)
-        // Use current adjustment when freezing, set adjustment when unfreezing.
-        if (state.getCurAdj() >= ProcessList.CACHED_APP_MIN_ADJ && !opt.isFrozen()
-                && !opt.shouldNotFreeze()) {
-            mCachedAppOptimizer.freezeAppAsyncLSP(app);
-        } else if (state.getSetAdj() < ProcessList.CACHED_APP_MIN_ADJ) {
-            mCachedAppOptimizer.unfreezeAppLSP(app, oomAdjReason);
-        }
-    }
-```
-在 Jetbrains IDE 中可搜索插件 [MarkdownQuote](https://plugins.jetbrains.com/plugin/22311-markdownquote)，可以一键简单Copy复制上述的格式，对于格式的解析，可以通过
-[markdown-it-quote](https://www.npmjs.com/package/markdown-it-quote) 来实现。
-
-- 兼容的选择  
-考虑到很多 markdown 解析工具，对新的标准支持有一定的工作量以及兼容性问题，通过原有的 markdown 格式，也能实现代码块的可追溯，
-这里也鼓励这种新的方式来写代码块。
+### 兼容的选择  
+  考虑到很多 markdown 解析工具，对新的标准支持有一定的工作量以及兼容性问题，通过原有的 markdown 格式，也能实现代码块的可追溯，
+  这里也鼓励这种新的方式来写代码块。
   - 写法
     ````markdown
     ```java
@@ -141,7 +142,25 @@ public class HelloWorld {
     ```
     [OomAdjuster.java#L3125-L3131](https://github.com/10cl/fwkdev/blob/android-13.0.0_r52/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java#L3125-L3131)
 
-在 Jetbrains IDE 中可搜索插件 [MarkdownQuote](https://plugins.jetbrains.com/plugin/22311-markdownquote)，可以一键简单Copy复制上述的格式。
+
+
+### 一键引用
+因为我个人长期在和 AOSP 这套大型源码打交道，用这个方式如果手动来写，难免有点困难，所以专门开发了一款插件用来一键复制指定代码块的 Markdown 样式:
+
+[MarkdownQuote](https://source.toscl.com/markdown_quote/)是JetBrains插件，可以帮助你在IDE中高效地复制代码围栏，更多细节请参阅[SourceCodeTrace项目](https://source.toscl.com/zh-hans/)。
+
+目前这个插件已经上架到 Jetbrains IDE 市场，可以直接在 IDE中： File -> Settings -> Plugins -> 搜索 "MarkdownQuote" 安装体验。
+
+### 解析的支持
+因为是新的样式，还需要有解析的支持，我差不多使用了10年的 Sublime，比较热衷于使用这款轻量级的编辑器，管理了很多文字上的工作，所以准备在 Sublime 上尝试。  
+Sublime 上基于 pymdownx 有一款 MarkdownPreview 插件，我在这个上面改了一版解析的流程，但是作为网站的显示，中间还需要一些工作要做，暂时没法上线。
+
+vuepress 是比较便捷的在线网站生成框架，基于 markdown-it 生成 markdown样式，因此，基于这个框架上，写了一款插件，并上架到了 NPM:
+**markdown-it-quote**是一个用于[markdown-it](https://github.com/markdown-it/)的插件，支持多种代码围栏功能。
+
+![示例](https://raw.githubusercontent.com/SourceCodeTrace/websites/main/source/.vuepress/public/images/quote_to_html.png)
+
+>目前所有开发的功能均是开源的形式，旨在推广代码的可溯源。
 
 ### SourceCodeTrace 的意义
 SourceCodeTrace（源代码追溯）这个组织名称可以传达以下含义：
@@ -153,7 +172,7 @@ SourceCodeTrace（源代码追溯）这个组织名称可以传达以下含义�
 
 ### Logo的设计
 
-<img src="./.vuepress/public/logo.png" alt="logo.png" style="width: 20%;">
+<img src="logo.png" alt="logo.png" style="width: 20%;">
 
 描述SourceCodeTrace组织的可能的logo设计方案：
 Logo设计：
@@ -168,7 +187,7 @@ Logo设计：
 要推广你的组织和传播组织的思想，你可以采取以下策略：
 
 - 建立一个网站或在线平台：创建一个专门的网站或在线平台，介绍你的组织、宗旨和使命。在网站上提供关于代码块来源设计的信息、最佳实践、指南和资源，以便开发者和社区成员参考和学习。
-  - [SourceCodeTrace](https://source.toscl.com)
+  - [SourceCodeTrace](https://source.toscl.com/zh-hans/)
 - 社交媒体宣传：利用社交媒体平台，如Twitter、LinkedIn、Facebook等，建立组织的社交媒体账号。定期发布有关代码块来源的相关内容，包括观点分享、实用技巧、行业新闻、事件和活动等，吸引关注者并扩大影响力。
   - （微博、Twitter）
 - 写博客或技术文章：撰写关于代码块来源设计的博客文章或技术文章，并在个人博客、技术平台或开发者社区上发布。通过分享见解、经验和最佳实践，吸引读者的关注并传播组织的思想。
@@ -176,11 +195,10 @@ Logo设计：
 - 参与技术社区和活动：积极参与技术社区、开发者论坛和相关行业活动。参与讨论、回答问题、分享经验，并提到你的组织和推动代码块来源的思想。建立个人和组织的声誉和影响力。
     - （在平台共享观点，答疑解惑）
 - 合作和合作伙伴关系：与其他组织、社区或个人建立合作伙伴关系，共同推广代码块来源的设计和实践。合作可以包括共同举办活动、合作撰写文章或开发工具，共同传播组织的思想。
-    - （找点人一起开发）
 - 教育和培训：提供关于代码块来源设计和最佳实践的教育和培训。可以组织在线研讨会、工作坊、培训课程等，向开发者和技术社区传授相关知识和技能。
     - （做一些视频介绍一些源码的解析）
 - 开源项目和工具：开发开源项目或工具，以促进代码块来源的设计和实践。通过开源项目的使用和贡献，推动组织的思想并获得更多的曝光和支持。
-    - （Jetbrain IDE 插件、sublime 插件、 vuepress 插件）
+    - （JetBrains IDE 插件、sublime 插件、 vuepress 插件）
 以上策略可以相互结合，根据你的资源和目标受众来制定推广计划。持续不断地提供有价值的内容、积极参与社区和建立良好的合作关系，将有助于扩大你的组织的影响力和传播你的思想。
 
 
