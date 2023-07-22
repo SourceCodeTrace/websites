@@ -2,6 +2,10 @@
 
 ![jet_plugin_search](/images/jet_plugin_search.png)
 
+这是 [SourceCodeTrace](https://source.toscl.com/zh-hans/) 项目之一，提供一种便捷的方式，快速复制包含代码来源的 IDE 插件。 
+
+>SourceCodeTrace Project 帮助您在博客、文章记录的过程中，引入对应项目以及版本，行号等信息，让后续的读者，通过引用来源，能够进行更加深入的学习，在博客或文章中引入代码块时，尽量提供代码的来源信息。
+
 您是否厌倦了在 Markdown 文档中手动格式化代码块？MarkdownQuote 可以帮您节省不少麻烦！这个强大的 JetBrains 插件让代码引用变得轻而易举，让您专注于撰写优秀的内容。
 
 ## 为什么选择 MarkdownQuote？
@@ -36,6 +40,8 @@
 ## 可用的模板
 
 MarkdownQuote 提供多种模板，以满足不同的使用情况。以下是一些示例：
+
+>Github 和 Gitee 均支持包含版本，具体行数的永久链接(permalink)，MarkdownQuote 通过读取当前仓库的<remoteurl>, <HEAD>, 以及当前文件的行数，文件名等来生成对应的来源URL。
 
 1. 模板：语言 & 链接 & 代码
 
