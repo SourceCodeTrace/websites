@@ -8,6 +8,8 @@
   },
   "scripts": {
     "source:dev": "vuepress dev source",
-    "source:build": "vuepress build source"
+    "source:build": "vuepress build source",
+    "www:dev": "vuepress dev www",
+    "www:build": "vuepress build www"
   }
 }
