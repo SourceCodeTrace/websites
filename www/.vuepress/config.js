@@ -8,7 +8,7 @@ var timestampCache = {}
 
 module.exports = {
   base: '/',
-  title: '石璀亮的技术博客',
+  title: '石璀亮',
   markdown: {
     extendMarkdown: md => {
       const markdownQuote = require('markdown-it-quote')
@@ -21,17 +21,21 @@ module.exports = {
   themeConfig: {
     locales: {
       '/': {
-        selectText: 'Languages',
-        label: 'English',
+        selectText: '语言',
+        label: '简体中文',
+        lang: 'zh-Hans',
         serviceWorker: {
           updatePopup: {
-            message: "New content is available.",
-            buttonText: "Refresh"
+            message: "发现新内容可用.",
+            buttonText: "刷新"
           }
         },
         sidebar: {
         },
-        lastUpdated: 'Last Updated'
+        nav:  [
+          { text: "Android系统", link: `/index_android_framework` },
+        ],
+        lastUpdated: '最后更新'
       }
     },
     displayAllHeaders: true,
@@ -41,7 +45,7 @@ module.exports = {
     },
     repo: 'https://github.com/10cl',
     docsRepo: 'https://github.com/SourceCodeTrace/websites',
-    docsDir: 'source',
+    docsDir: 'www',
     editLinks: false
   },
   plugins: [
@@ -72,7 +76,7 @@ module.exports = {
           moment.locale(langMap[lang])
           var localized = moment(original).format('lll')
           
-          moment.locale('en')
+          moment.locale('zh-Hans')
           var iso = moment(original).toISOString()
           timestampCache[localized] = iso
 
