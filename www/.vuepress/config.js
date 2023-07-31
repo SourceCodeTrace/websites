@@ -8,7 +8,7 @@ var timestampCache = {}
 
 module.exports = {
   base: '/',
-  title: '石璀亮',
+  title: '10cl',
   markdown: {
     extendMarkdown: md => {
       const markdownQuote = require('markdown-it-quote')
