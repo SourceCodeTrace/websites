@@ -33,6 +33,7 @@ module.exports = {
         sidebar: {
         },
         nav:  [
+          { text: "AI Agent", link: `/index_ai_agent` },
           { text: "Android系统", link: `/index_android_framework` },
         ],
         lastUpdated: '最后更新'
