@@ -136,4 +136,138 @@ function createAxiosLanguageModel(url: string, config: object, defaultParams: Re
 [/src/model.ts?#L89-L116](https://github.com/microsoft/TypeChat/blob/e300dccd2fbf846518dba7fe94a36a30168885ec//src/model.ts?#L89-L116)
 
 
+## 实际案例 prompt 解析
+不通过 typechat， 基于 typechat的原理，你可以直接将下面的 《处理后的 prompt》直接粘贴到 chatGpt 也能得到同样的结果。
+这里就是将 typechat 内提问的方式，通过中文的问答来实现的。
+
+### 用户输入
+>我要两份大的，一份加意大利辣香肠，另一份多加酱汁。意大利辣肠加罗勒酱汁加加拿大培根。再加一份沙拉。麦
+我把加拿大熏肉煎成五分熟。做希腊沙拉，不要红洋葱。给我两杯麦克和杰克，一杯内华达山脉。哦，再加一份不加红洋葱的沙拉。
+
+### 处理后的 prompt
+
+让 ChatGpt 为提供我们定义的 typescript 格式的 prompt为：
+你是一个JSON转换服务，根据以下TypeScript定义将用户请求转换为“Order”类型的JSON对象:
+```
+// an order from a restaurant that serves pizza, beer, and salad
+export type Order = {
+    items: (OrderItem | UnknownText)[];
+};
+
+export type OrderItem = Pizza | Beer | Salad | NamedPizza;
+
+// Use this type for order items that match nothing else
+export interface UnknownText {
+    itemType: 'unknown',
+    text: string; // The text that wasn't understood
+}
+
+
+export type Pizza = {
+    itemType: 'pizza';
+    // default: large
+    size?: 'small' | 'medium' | 'large' | 'extra large';
+    // toppings requested (examples: pepperoni, arugula)
+    addedToppings?: string[];
+    // toppings requested to be removed (examples: fresh garlic, anchovies)
+    removedToppings?: string[];
+    // default: 1
+    quantity?: number;
+    // used if the requester references a pizza by name
+    name?: "Hawaiian" | "Yeti" | "Pig In a Forest" | "Cherry Bomb";
+};
+
+export interface NamedPizza extends Pizza {
+}
+
+export type Beer = {
+    itemType: 'beer';
+    // examples: Mack and Jacks, Sierra Nevada Pale Ale, Miller Lite
+    kind: string;
+    // default: 1
+    quantity?: number;
+};
+
+export const saladSize = ['half', 'whole'];
+
+export const saladStyle = ['Garden', 'Greek'];
+
+export type Salad = {
+    itemType: 'salad';
+    // default: half
+    portion?: string;
+    // default: Garden
+    style?: string;
+    // ingredients requested (examples: parmesan, croutons)
+    addedIngredients?: string[];
+    // ingredients requested to be removed (example: red onions)
+    removedIngredients?: string[];
+    // default: 1
+    quantity?: number;
+};
+
+```
+以下是用户请求:
+"""
+我要两份大的，一份加意大利辣香肠，另一份多加酱汁。意大利辣肠加罗勒酱汁加加拿大培根。再加一份沙拉。麦
+我把加拿大熏肉煎成五分熟。做希腊沙拉，不要红洋葱。给我两杯麦克和杰克，一杯内华达山脉。哦，再加一份不加红洋葱的沙拉。
+"""
+以下是转换成JSON对象的用户请求，其中包含2个缩进空间，没有值为undefined的属性:
+
+###  **ChatGPT** 的回复
+
+好的！以下是用户请求转换成的JSON对象，根据提供的TypeScript定义进行处理：
+
+```json
+{
+  "items": [
+    {
+      "itemType": "pizza",
+      "size": "large",
+      "addedToppings": ["意大利辣香肠"],
+      "quantity": 2
+    },
+    {
+      "itemType": "pizza",
+      "size": "large",
+      "addedToppings": ["多加酱汁", "加拿大培根", "罗勒酱汁"],
+      "quantity": 1
+    },
+    {
+      "itemType": "salad",
+      "portion": "whole",
+      "style": "希腊",
+      "removedIngredients": ["红洋葱"],
+      "quantity": 1
+    },
+    {
+      "itemType": "pizza",
+      "size": "medium",
+      "name": "Yeti",
+      "addedToppings": ["加拿大熏肉煎成五分熟"],
+      "quantity": 1
+    },
+    {
+      "itemType": "salad",
+      "portion": "whole",
+      "style": "希腊",
+      "removedIngredients": ["红洋葱"],
+      "quantity": 1
+    },
+    {
+      "itemType": "beer",
+      "kind": "麦克和杰克",
+      "quantity": 2
+    },
+    {
+      "itemType": "beer",
+      "kind": "内华达山脉",
+      "quantity": 1
+    }
+  ]
+}
+```
+
+请注意，此转换是根据提供的TypeScript定义和用户请求进行的。用户请求中提到的披萨配料（"意大利辣香肠"、"多加酱汁"、"加拿大培根"、"罗勒酱汁"）和沙拉配料（"加拿大熏肉煎成五分熟"、"红洋葱"）已添加到JSON对象中的相应披萨和沙拉项目中。披萨和沙拉的尺寸和类型也按照用户请求进行了设置。啤酒项目也根据请求中的数量和类型进行了添加。
+
 本文也在持续的更新中，如果你需要得到最新的更新，请访问: [TypeChat源码分析：基于大语言模型的定制化 AI Agent 交互规范](https://www.toscl.com/ai_agent_typechat/)
