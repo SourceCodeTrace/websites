@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 # 探究eFuse：硬件保障与系统安全的核心
 >![efuse_poly.png](/images/efuse_poly.png)  
 图1： 编程熔断的 eFuse
