@@ -4,32 +4,24 @@ sidebar: auto
 
 # Android13冻结进程分析：如何提高设备性能和用户体验
 
-本文介绍了Android13中的冻结进程功能，它是一种重要的资源管理策略，可以提高系统性能和稳定性，同时最大限度地节省设备的资源和电池消耗。文章讨论了如何合理分配资源，包括CPU、内存等，以提高设备性能和用户体验。此外，文章还提到了冻结进程对应用程序线程的影响，并介绍了Android13与Android11的不同之处。
+>本文介绍了Android13中的冻结进程功能，它是一种重要的资源管理策略，可以提高系统性能和稳定性，同时最大限度地节省设备的资源和电池消耗。
+文章讨论了如何合理分配资源，包括CPU、内存等，以提高设备性能和用户体验。此外，文章还提到了冻结进程对应用程序线程的影响，并介绍了Android13与Android11的不同之处。
 
-目前 Google 原生系统上是 在Android 11 或更高版本支持 Cache App 的CPU冻结，即当应用切换到后台，并且没有其他的应用行为的时候，
-该应用的adj在一定时间后，会定义为cached，这时候系统会将该应用的进程冻结，以达到省电的目的，当应用再次切换到前台的时候，系统会将该应用的进程解冻，以达到快速启动的目的。
+目前，Google 原生系统在 Android 11 或更高版本上支持 CACHE 应用的 CPU 冻结功能。当应用切换到后台并且没有其他活动时，系统会在一定时间内通过状态判断，将进程 ID 迁移到冻结的 cgroup 节点上，实现冻结 CACHE 应用。这项功能可以减少活跃缓存应用在后台存在时所消耗的 CPU 资源，从而达到节电的目的。当应用再次切换到前台时，系统会将该应用的进程解冻，以实现快速启动。
 
-Google 在这块的开发上进展也比较缓慢，从Android11开始到现在Android13 基本上也就是个雏形，
-但是在国内厂商这块，早就已经开始了这块的开发，利用CPU调频、降速、冻结的这套基础功能，很多厂商都已经做了很多工作，基本上也不会等到应用到了 CACHED 才开始冻结，并且基本上在Android 6.0 以上的版本都已经支持了。
+Google 在这方面的开发进展相对缓慢，从 Android 11 到现在的 Android 13，该功能基本上还只是个雏形。然而，在国内厂商方面，早就已经开始开发了类似功能，利用 CPU 调频、降速、冻结等基础功能，许多厂商在 Android 6.0 及以上版本已经支持了这些功能。
+CPU 冻结对于手持设备而言可以提升整机性能。由于电量和 CPU 资源都是有限的，必须合理地分配资源，以便让用户在使用设备时获得更好的体验。
 
-## CPU冻结提升整机性能
-对于手持设备而言，电量是有限的，CPU的资源也是有限的，我们必须合理的分配资源，这样才能让用户在使用设备的时候，获得更好的主观体验。
-比如前台的应用多分配资源，后台的应用少分配资源，这里的资源可以是CPU、内存，CPU可以降速、冻结、大小核分配，内存可以回收、压缩、磁盘交换等等，这篇文章主要讲的是这个大的框架下，CPU冻结的场景，后续我会在更新其他场景的优化。
+>基于 [SourceCodeTrace](https://source.toscl.com/zh-hans/) 项目推崇的原则，本文代码块引用均有来源，SourceCodeTrace Project 帮助您在博客、文章记录的过程中，引入对应项目以及版本，行号等信息，让后续的读者，通过引用来源，能够进行更加深入的学习，在博客或文章中引入代码块时，尽量提供代码的来源信息。
 
-以下是冻结进程的几个好处：
-1. 进程的执行被暂停：冻结的进程会被暂停，其所有线程的执行将被停止。这包括应用程序的主线程以及任何后台线程。
-
-2. 资源释放：冻结进程占用的资源，例如CPU、内存等，会被释放。这些资源将被系统重新分配给其他需要执行的进程或系统服务。
-
+## 冻结进程的作用
+1. 进程的执行被暂停：冻结的进程会被暂停，其所有线程的执行将被停止，包括应用程序的主线程以及任何后台线程。
+2. 资源释放：冻结进程占用的资源，例如 CPU 和内存，会被释放。这些资源将被系统重新分配给其他需要执行的进程或系统服务。
 3. 电池节省：冻结进程不会在后台运行，因此可以节省设备的电池消耗。对于后台的应用程序，冻结可以降低其电池使用量，延长设备的电池寿命。
-
 4. 系统稳定性：通过冻结不活跃或低优先级的进程，可以避免它们竞争系统资源，从而提高系统的稳定性和响应能力。
-
 5. 快速恢复：冻结的进程可以快速恢复其执行状态。当需要重新激活进程时，系统可以迅速将其恢复到之前的运行状态，而无需重新启动或加载应用程序。
-
 冻结进程并不会终止进程的执行或销毁应用程序。冻结只是暂时挂起进程，以优化资源使用。一旦系统需要再次运行该进程（例如用户重新打开应用程序或系统需要其提供服务），它会被解冻并恢复运行。
-
-冻结进程是Android系统中重要的资源管理策略之一，它有助于提高系统性能和稳定性，同时最大限度地节省设备的资源和电池消耗。
+冻结进程是 Android 系统中重要的资源管理策略之一，它有助于提高系统性能和稳定性，同时最大限度地节省设备的资源和电池消耗。
 
 ## 挂起进程的方式
 CPU冻结是指将应用的进程挂起，不再分配CPU资源，以达到省电的目的，当应用再次切换到前台的时候，系统会将该应用的进程解冻，以达到快速启动的目的。
@@ -64,6 +56,29 @@ kill -SIGCONT 16690 # 发送信号任务给进程ID16690恢复
 在Android11之前，大部分的厂商也是通过移植cgroup的freezer来实现的，freezer是Linux内核中用于控制和限制进程组的一种特性，它可以对进程组进行资源控制，包括CPU、内存、IO等。
 freezer cgroup 通过将进程的状态设置为 FROZEN 来实现冻结，这样进程就不会再被调度，也不会再消耗CPU资源，直到进程的状态被设置为 THAWED 为止。
 
+
+## 开发者模式下开启应用冻结
+```
+adb shell device_config put activity_manager_native_boot use_freezer true && adb reboot
+```
+
+## 检查测试应用是否被冻结
+被冻结的应用会被分配到对应的 cgroup 组，不同设备的节点文件也不一致，根据设备实际操作：
+
+- 比如检查 `/dev/freezer/frozen/cgroup.procs` 中的进程ID列表，如下是我常用的命令：
+```bash
+adb shell cat /dev/freezer/frozen/cgroup.procs | grep -E "[0-9]{4}" | xargs adb shell ps -A | grep "com"
+```
+
+- 检查是否存在 `/sys/fs/cgroup/uid_0/cgroup.freeze` 文件。
+```bash
+adb shell cat /sys/fs/cgroup/uid_{应用UID}/cgroup.freeze
+```
+
+- 查看日志（一般日志会有相应含义的字符，各家厂商也不一样，这里是个例子）
+```bash
+adb logcat | grep -i "\(freezing\|froze\)"
+```
 
 ## 进程状态
 ### 标准状态
@@ -118,9 +133,9 @@ adb shell ps -A | grep "D "
 ```
 
 在不同版本上，随着CPU的冻结这块功能的不断迭代，在高版本中已经不会对进程切到 D 状态，而是保留 S 态，然后在 S 态的基础上做 freeze 的处理。
-比如常见的是，在进程被冻结之后，进程会阻塞在 `_refrigerator` 或者 `do_freezer_trap` 函数上。 
+比如常见的是，在进程被冻结之后，进程还是处于 `S` 态，但是会在内核函数 `_refrigerator` 或者 `do_freezer_trap` 上等待。 
 
-比如在内核版本 5.4 （Linux localhost 5.4.210 #4 SMP PREEMPT Tue Jul 11 03:50:44 UTC 2023 aarch64 Toybox ）中，`D` 状态以及不显示了，会在 `WCHAN` 中显示 `do_freezer_trap`.
+比如在内核版本 `5.4 （Linux localhost 5.4.210 #4 SMP PREEMPT Tue Jul 11 03:50:44 UTC 2023 aarch64 Toybox ）` 中，`D` 状态以及不显示了，会在 `WCHAN` 中显示 `do_freezer_trap`.
 ```markdown
 root           108     2       0      0 ion_heap_deferred_free 0 S [ion_system_heap]
 root           300     2       0      0 ion_heap_deferred_free 0 S [carveout_oemcry]
@@ -147,67 +162,7 @@ wchan      WCHAN     name of the kernel function in which the process
 ```
 :::
 
-
-## 冻结的场景有哪些
-进程的冻结这套机制，是整机性能优化的这块一个很主要的技术点，通过运用好这套技术的话，可以让整机的性能得到很大的提升，但是如果使用不当的话，也会带来很多问题，比如应用切换到前台的时候，会出现卡顿的现象，这个时候用户体验就会很差，所以这块的优化，需要谨慎对待。
-国内的情况和国外有所不同，国内的应用繁多，其实有优先级和类别的区别，除了一些主流的应用，其他应用基本就占用很小的份额，并且国内的开发者因为缺乏足够的政策监管，会出现多种技术手段用来互拉。
-所以国内的手机厂商，针对冻结不仅仅针对与 CACHE APP， 而是对所有的应用进行一个状态模块的拆解，比如应用在后台需要被冻结，然后通过状态模块的判断，为什么不需要冻结，比如用了桌面有小组件、音频播放，有跨进程的行为等等，这样极致的使用了CPU冻结，使得系统的性能有了极大的提高。
-并且基于国内的特定环境，名单，微信、QQ一直都是被主流厂商在Framework代码里面直接加入白名单的，这样就不会被冻结，所以国内的手机厂商，对于冻结的场景，是有很多的优化的，
-
-什么时候冻结其实是一个很复杂的问题，需要专门维护了一个流程图来管理场景， 这里我只是简单的介绍一下原生的场景，后续我会在更新一篇文章，专门讲解国内的场景。
-
-### ADJ 更新
-在Android Framework中，`OomAdjuster` OOM资源管理是Android系统中重要的资源管理机制之一，它负责计算和调整进程的OOM（Out Of Memory）优先级。OOM优先级用于确定在系统内存不足时哪些进程会被杀死以释放内存资源。`OomAdjuster`考虑了进程的内存使用情况、可见性、重要性、运行状态和系统角色等因素，计算出每个进程的合适OOM优先级，并将其应用于系统的资源管理。
-
-**adj（Adjustment）**：在Linux内核中，进程的优先级由`adj`值来表示，也称为进程优先级值。在Android系统中，OOM优先级通过`adj`值来实现。Android系统定义了一系列的`adj`值范围，代表不同的OOM优先级。例如，`adj`值为-17代表前台进程，`adj`值为0代表可见进程，`adj`值为6代表服务进程等。系统根据`OomAdjuster`计算出的OOM优先级来设置进程的`adj`值，从而确定进程在内存不足时被杀死的概率。
-
-调整过程：`OomAdjuster`计算出进程的OOM优先级后，会将其映射到对应的`adj`值范围。然后，系统根据进程的`adj`值来决定哪些进程优先保留，哪些进程应该被终止以释放内存。`adj`值越小，表示进程优先级越高，越不容易被杀死。`OomAdjuster`的目的就是通过合理的计算和调整，使得系统能够更好地管理资源，提高系统性能和稳定性。
-
-在 `OomAdjuster` 更新 adj 的时候，会调用 `updateAppFreezeStateLSP` 函数用来更新应用的冻结状态：
-```java {3107-3131} {3125-3126} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java?#L3107-L3131)
-    private void updateAppFreezeStateLSP(ProcessRecord app, String oomAdjReason) {
-        if (!mCachedAppOptimizer.useFreezer()) {   // 是否使用冻结机制
-            return;
-        }
-
-        if (app.mOptRecord.isFreezeExempt()) { // 是否免冻结, 这里追溯过去的话，目前只有判断是否拥有安装器权限
-            return;
-        }
-
-        final ProcessCachedOptimizerRecord opt = app.mOptRecord;
-        // if an app is already frozen and shouldNotFreeze becomes true, immediately unfreeze
-        if (opt.isFrozen() && opt.shouldNotFreeze()) {  // 是否已经冻结并且不应该冻结
-            mCachedAppOptimizer.unfreezeAppLSP(app, oomAdjReason);
-            return;
-        }
-
-        final ProcessStateRecord state = app.mState;
-        // Use current adjustment when freezing, set adjustment when unfreezing.
-        if (state.getCurAdj() >= ProcessList.CACHED_APP_MIN_ADJ && !opt.isFrozen( )
-                && !opt.shouldNotFreeze()) {  // 当前 adj 大于最小冻结 adj 并且没有被冻结并且应该被冻结
-            mCachedAppOptimizer.freezeAppAsyncLSP(app);
-        } else if (state.getSetAdj() < ProcessList.CACHED_APP_MIN_ADJ) {
-            mCachedAppOptimizer.unfreezeAppLSP(app, oomAdjReason);
-        }
-    }
-```
-[/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java?#L3107-L3131](https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java?#L3107-L3131)
-
-通过判断冻结功能是否开启、应用是否属于豁免的应用、应用是否已经被冻结、应用是否不应该被冻结。
-当做完基础的判断之后，主要通过判断应用当前的 adj 是否大于等于 900 (CACHE_APP) 来决定是否冻结应用，直接然后执行 `freezeAppAsyncLSP` 走冻结流程。
-
-
-
-
--------------------------
-
-冻结的过程还有很多判断，比如 binder 的连接情况，是否要延迟在冻结等。
-
 ## 冻结的流程
-在上述场景中走到了 函数 `freezeAppAsyncLSP`, 后续是具体执行的逻辑：
-```text
-mCachedAppOptimizer.freezeAppAsyncLSP(app) -> freezeProcess -> Process.setProcessFrozen
-```
 
 ### Android13 的变更
 函数 `freezeProcess` 是最终调用， 冻结的流程，为了详细了解这两年版本的变化，这里直接对比 Android 11的冻结逻辑，然后和 Android 13 最新的冻结逻辑做一个比对。
@@ -220,7 +175,7 @@ Android 13 针对binder 调用进行了优化，对进程的 binder 先进行冻
 
 Google 最近几年逐步将 cgroup 上的功能，在上层做了一层封装，这样就可以通过上层的调用来实现CPU、内存资源的控制。
 CPU冻结这一块，上层主要封装在是通 `Process.java`类的两个 native 函数中， 如下是这块主要的两个函数：
-```java {1097-1119} {1097} (https://gitee.com/cl10/fwkdev/blob/ecf53aa9439bc30eb00374d7e83b013ba36094b9//dev/src/frameworks/base/core/java/android/os/Process.java?#L1097-L1119)
+```java {1097-1119} {1106,1119} (https://gitee.com/cl10/fwkdev/blob/ecf53aa9439bc30eb00374d7e83b013ba36094b9//dev/src/frameworks/base/core/java/android/os/Process.java?#L1097-L1119)
     /**
      * Freeze or unfreeze the specified process.
      *
@@ -254,7 +209,7 @@ enableFreezer(Android 13 已经废弃）, 针对所有应用的解冻，之前�
 ### Native函数 setProcessFrozen
 下面以 native 函数 `setProcessFrozen` 介绍冻结的流程， 因为 Android 系统所规划的路线，我的理解是尽量将内核上的变化，然后规整到 AOSP 的架构里面，上层通过简单的接口调用，实现对整个设备资源进行划分。
 通过简单的配置一个 
-```cpp {282-296} {282} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/core/jni/android_util_Process.cpp?#L282-L296)
+```cpp {282-296} {288} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/core/jni/android_util_Process.cpp?#L282-L296)
 void android_os_Process_setProcessFrozen(
         JNIEnv *env, jobject clazz, jint pid, jint uid, jboolean freeze)
 {
@@ -273,7 +228,13 @@ void android_os_Process_setProcessFrozen(
 ```
 [/dev/src/frameworks/base/core/jni/android_util_Process.cpp?#L282-L296](https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/core/jni/android_util_Process.cpp?#L282-L296)
 
-### TaskProfiles
+### cgroup 抽象层
+Android 10 及更高版本将对照组 (cgroup) 抽象层和任务配置文件搭配使用，让开发者能够使用它们来描述应用于某个线程或进程的一组（或多组）限制。
+然后，系统按照任务配置文件的规定操作来选择一个或多个适当的 cgroup；
+通过这种方式，系统可以应用各种限制，并对底层 cgroup 功能集进行更改，而不会影响较高的软件层。 
+>cgroup 提供一种机制，可将任务集（包括进程、线程及其所有未来的子级）聚合并分区到具有专门行为的层级组中。Android 使用 cgroup 控制及考量 CPU 和内存等系统资源的使用和分配情况，并支持 Linux 内核 cgroup v1 和 cgroup v2。
+
+
 libprocessgroup 中的 `SetProcessProfiles` 函数，这个函数是通过 `TaskProfiles` 类来实现的，这个类主要是通过 `TaskProfiles::GetInstance()` 来获取单例对象，然后调用 `SetProcessProfiles` 函数来实现进程的冻结。
 
 通过传输三个参数 **UID, PID, "Frozen" or "Unfrozen"**，来实现进程的冻结和解冻。
@@ -282,7 +243,7 @@ libprocessgroup 中的 `SetProcessProfiles` 函数，这个函数是通过 `Task
 下面通过 `SetProcessProfiles` 函数来介绍冻结的流程，通过传输下去的 "Frozen" 字符如何最终写入到 cgroup 中。
 
 
-```cpp {150-152} {150} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/system/core/libprocessgroup/processgroup.cpp?#L150-L152)
+```cpp {150-152} {151} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/system/core/libprocessgroup/processgroup.cpp?#L150-L152)
 bool SetProcessProfiles(uid_t uid, pid_t pid, const std::vector<std::string>& profiles) {
     return TaskProfiles::GetInstance().SetProcessProfiles(uid, pid, profiles, false);
 }
@@ -291,7 +252,7 @@ bool SetProcessProfiles(uid_t uid, pid_t pid, const std::vector<std::string>& pr
 
 TaskProfiles 类中的 `SetProcessProfiles` 函数，这个函数主要是通过 `TaskProfile` 类来实现的，
 这个类主要是通过 `TaskProfile::EnableResourceCaching` 函数读取配置文件，通过 `TaskProfile::ExecuteForProcess` 函数来实现进程的冻结。
-```cpp {807-826} {807} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/system/core/libprocessgroup/task_profiles.cpp?#L807-L826)
+```cpp {807-826} {816} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/system/core/libprocessgroup/task_profiles.cpp?#L807-L826)
 bool TaskProfiles::SetProcessProfiles(uid_t uid, pid_t pid,
                                       const std::vector<std::string>& profiles, bool use_fd_cache) {
     bool success = true;
@@ -318,7 +279,7 @@ bool TaskProfiles::SetProcessProfiles(uid_t uid, pid_t pid,
 对于新的架构之下，`TaskProfile` 类中的 `EnableResourceCaching` 函数，这个函数主要是通过 `FdCacheHelper` 类来实现的，这个类主要是通过 `FdCacheHelper::Cache` 函数来实现进程的冻结, 这里主要是对文件做一个缓存，这里文件这块的流程就不深入分解了。
 
 
-```cpp {339-358} {339} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/system/core/libprocessgroup/task_profiles.cpp?#L339-L358)
+```cpp {339-358} {352} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/system/core/libprocessgroup/task_profiles.cpp?#L339-L358)
 void SetCgroupAction::EnableResourceCaching(ResourceCacheType cache_type) {
     std::lock_guard<std::mutex> lock(fd_mutex_);
     // Return early to prevent unnecessary calls to controller_.Get{Tasks|Procs}FilePath() which
@@ -342,13 +303,18 @@ void SetCgroupAction::EnableResourceCaching(ResourceCacheType cache_type) {
 ```
 [/dev/src/system/core/libprocessgroup/task_profiles.cpp?#L339-L358](https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/system/core/libprocessgroup/task_profiles.cpp?#L339-L358)
 
-- task_profiles.json 
 
-`task_profiles.json` 文件中，在 `Attributes` 属性下，
-对应冻结的属性为："FreezerState"，对应的控制器为`freezer`，然后最终写的节点为 `cgroup.freeze`.
-, 目前已有的控制器包含 `cpuset` `memory` `cpu` `blkio` 等，这些也可以新增自定义。
+#### task_profiles.json
+`task_profiles.json` 文件位于 `<ANDROID_BUILD_TOP>/system/core/libprocessgroup/profiles/` 下。
+该文件用于描述要应用于进程或线程的一组特定操作。这组操作与一个配置文件名称相关联，后者在 `SetTaskProfiles` 和 `SetProcessProfiles` 调用中用于调用配置文件操作。
 
-```json {75-79} {75} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/system/core/libprocessgroup/profiles/task_profiles.json?#L75-L79)
+- Attributes
+  - Name 字段 - 指定 Attribute 的名称。
+  - Controller 字段 - 按名称引用 cgroups.json 文件中的 cgroup 控制器(目前已有的控制器包含 `cpuset` `memory` `cpu` `blkio` 等，这些也可以新增自定义)
+  - File 字段 - 为相应控制器下的特定文件命名。
+
+`task_profiles.json` 文件中，在 `Attributes` 属性下， 对应冻结的属性为："FreezerState"，对应的控制器为`freezer`，然后最终写的节点为 `cgroup.freeze`.
+```json {75-79} {76} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/system/core/libprocessgroup/profiles/task_profiles.json?#L75-L79)
     {
       "Name": "FreezerState",
       "Controller": "freezer",
@@ -358,7 +324,7 @@ void SetCgroupAction::EnableResourceCaching(ResourceCacheType cache_type) {
 [/dev/src/system/core/libprocessgroup/profiles/task_profiles.json?#L75-L79](https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/system/core/libprocessgroup/profiles/task_profiles.json?#L75-L79)
 
 **"Frozen"** 关键词最终定义的地方在:
-```json {96-121} {96} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/system/core/libprocessgroup/profiles/task_profiles.json?#L96-L121)
+```json {96-121} {97} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/system/core/libprocessgroup/profiles/task_profiles.json?#L96-L121)
     {
       "Name": "Frozen",
       "Actions": [
@@ -406,7 +372,7 @@ cgroup.freeze       cgroup.stat             cpu.pressure    pid_12821
 cgroup.max.depth    cgroup.subtree_control  cpu.stat
 ```
 
-## 冻结跨进程的行为
+## 冻结跨进程行为
 在Android中，跨进程交互是指不同进程之间进行通信和数据交换的方式。Android提供了多种方法来实现跨进程交互，以下是其中一些常见的方法：
 1. Binder：Binder是Android中最常用的跨进程通信（IPC）机制。它是一种高效的客户端-服务器架构，由底层Linux内核提供支持。通过Binder，一个进程可以注册一个服务，并暴露接口供其他进程调用。其他进程可以通过Binder代理来调用服务的接口，从而实现进程间通信。
 2. AIDL（Android Interface Definition Language）：AIDL是Android Interface Definition Language的缩写。它是一种用于定义进程间接口的IDL语言。AIDL可以帮助开发人员定义接口，并生成对应的Java类和Binder代理，使得跨进程调用变得更加简单。
@@ -420,7 +386,7 @@ cgroup.max.depth    cgroup.subtree_control  cpu.stat
 
 ### ContentProvider 交互异常
 如果是常规的一个异步的调用，没有强绑定，不会让调用阻塞，这样的调用不会有什么问题，但是如果是一个同步调用，比如进程 A 调用进程 B 的 ContentProvider接口，进程 B 被冻结了，这个时候进程 A 就会被挂起等待，如果没有处理这种场景，就会有如下类似的 trace:
-```java
+```java {15}
 "main" prio=5 tid=1 Native
   | group="main" sCount=1 dsCount=0 flags=1 obj=0x7209f5f8 self=0xb40000701e2cd010
   | sysTid=7766 nice=-10 cgrp=default sched=0/0 handle=0x71451a54f8
@@ -455,7 +421,7 @@ cgroup.max.depth    cgroup.subtree_control  cpu.stat
 
 ### onServiceConnected 交互异常
 在比如下述的 ANR 阻塞在 onServiceConnected， Service 绑定传输信息但是对方进程被冻结导致的ANR。
-```java
+```java {17}
 "main" prio=5 tid=1 Native
   | group="main" sCount=1 dsCount=0 flags=1 obj=0x72c702e0 self=0xdf185410
   | sysTid=8513 nice=-10 cgrp=default sched=0/0 handle=0xecb40470
@@ -491,16 +457,16 @@ cgroup.max.depth    cgroup.subtree_control  cpu.stat
 到了 Android 13 之后，binder 驱动已经支持 FREEZER 状态，当应用调用一个被 冻结 binder 进程后，会直接返回一个错误， 这就不会阻塞调用方的进程。
 
 ## 新的API BINDER_FREEZE
-相比Android 11， Android 13上会首先会冻结与进程关联的Binder接口，以刷新可能在排队中的Binder事务，如果冻结Binder接口失败，将会重新调度冻结` rescheduleFreeze(proc, "outstanding txns");`，这里会在延时10分钟在执行。
-如果冻结失败，会延时10分钟在执行，这样就不会影响到应用的正常使用，如果冻结成功，就会直接返回，不会阻塞调用方的进程，这样就不会出现上述的 ANR 问题。
+相比Android 11， Android 13上会首先会冻结与进程关联的Binder接口，以刷新可能在排队中的Binder事务，如果有 binder 的事务需要处理，将会重新延时（默认10分钟）在执行冻结进程逻辑。
+如果在冻结 binder 接口过程中异常就会直接将应用查杀。
+如果冻结成功，就会继续执行冻结进程的逻辑，因此不会阻塞 binder 调用方的进程，这样就不会出现上述的 ANR 问题。
 
-但是对于10分钟的延时而言，其实这个设计并没有让 freeezer 的功能得到充分的发挥。
-```java {1705-1733} {1708} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L1705-L1733)
+```java {1705-1733} {1708,1726} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L1705-L1733)
                 // Freeze binder interface before the process, to flush any
                 // transactions that might be pending.
                 try {
                     if (freezeBinder(pid, true) != 0) {
-                        rescheduleFreeze(proc, "outstanding txns");
+                        rescheduleFreeze(proc, "outstanding txns"); // outstanding_txns 表示是否有需要处理的事务，在下面内核的函数分析中会有涉及。
                         return;
                     }
                 } catch (RuntimeException e) {
@@ -528,9 +494,9 @@ cgroup.max.depth    cgroup.subtree_control  cpu.stat
 ```
 [/dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L1705-L1733](https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L1705-L1733)
 
-`freezeBinder` 是一个 native 函数，这个函数会调用到 binder 驱动实现对 binder 进行冻结，这个函数会直接返回，不会阻塞调用方的进程。
+`freezeBinder` 是一个 native 函数，这个函数会调用 Framework上兼容 BINDER_FREEZE 的接口上。
 
-```java {739-753} {739} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L739-L753)
+```java {739-753} {753} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L739-L753)
     /**
      * Informs binder that a process is about to be frozen. If freezer is enabled on a process via
      * this method, this method will synchronously dispatch all pending transactions to the
@@ -549,7 +515,7 @@ cgroup.max.depth    cgroup.subtree_control  cpu.stat
 ```
 [/dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L739-L753](https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L739-L753)
 
-### binder: adopt BINDER_FREEZE api
+### Framework兼容 BINDER_FREEZE api
 Framework 通过 `IPCThreadState::freeze` 调用到 libbinder 内：
 
 ```cpp {475-485} {478} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/jni/com_android_server_am_CachedAppOptimizer.cpp?#L475-L485)
@@ -566,7 +532,7 @@ static jint com_android_server_am_CachedAppOptimizer_freezeBinder(
 ```
 [/dev/src/frameworks/base/services/core/jni/com_android_server_am_CachedAppOptimizer.cpp?#L475-L485](https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/jni/com_android_server_am_CachedAppOptimizer.cpp?#L475-L485)
 
-这部分 native API 的设计，在2020年提交，用来解决上述的问题，调用方调用被冻结的进程后，会直接给返回 `ERR_FROZEN` , 而不是持续的阻塞。
+这部分 native API 的设计，在2020年提交，用来解决上述的问题，调用方调用被冻结的进程后，会直接给返回异常 , 而不是持续的阻塞。
 
 这个提交的内容如下：
 ::: tip
@@ -584,6 +550,8 @@ Change-Id: I31fed5ecb040f5ba5b8e27ab6a20c441964f32b4
 [binder: adopt BINDER_FREEZE api](https://android-review.googlesource.com/c/platform/frameworks/native/+/1421693)
 :::
 
+这是一个新增的 ioctl 用来，标记为 `BINDER_FREEZE` 用来操作 binder 的冻结功能。
+>在计算机中，ioctl(input/output control)是一个专用于设备输入输出操作的系统调用,该调用传入一个跟设备有关的请求码，系统调用的功能完全取决于请求码。
 
 ```cpp {1425-1445} {1435} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/native/libs/binder/IPCThreadState.cpp?#L1425-L1445)
 status_t IPCThreadState::freeze(pid_t pid, bool enable, uint32_t timeout_ms) {
@@ -610,9 +578,10 @@ status_t IPCThreadState::freeze(pid_t pid, bool enable, uint32_t timeout_ms) {
 ```
 [/dev/src/frameworks/native/libs/binder/IPCThreadState.cpp?#L1425-L1445](https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/native/libs/binder/IPCThreadState.cpp?#L1425-L1445)
 
-最终这个 native api 通过 `ioctrl` 会走到 binder 的驱动，这里附上 linux 内核的提交:
+最终这个 native api 通过 `ioctrl` 会走到内核 `binder` 的驱动上。
 
-### binder: BINDER_FREEZE ioctl
+### 内核新增的 BINDER_FREEZE ioctl特性
+
 ::: tip
 **binder: BINDER_FREEZE ioctl**
 
@@ -630,6 +599,198 @@ processes marked as frozen.
 [binder: BINDER_FREEZE ioctl  ](https://github.com/torvalds/linux/commit/432ff1e91694e4c55a5bf6bc0574f4c254970232)  
 
 :::
+#### 新增了三个字段
+![img_3.png](./.vuepress/public/images/img_3.png)
+
+为了实现 binder 的冻结，内核上 binder 的结构体，新增了三个字段。
+```h {414-419} {414,416,419} (https://github.com/torvalds/linux/blob/14f9643dc90adea074a0ffb7a17d337eafc6a5cc//drivers/android/binder_internal.h?#L414-L419)
+	int outstanding_txns;
+	bool is_dead;
+	bool is_frozen;
+	bool sync_recv;
+	bool async_recv;
+	wait_queue_head_t freeze_wait;
+```
+[/drivers/android/binder_internal.h?#L414-L419](https://github.com/torvalds/linux/blob/14f9643dc90adea074a0ffb7a17d337eafc6a5cc//drivers/android/binder_internal.h?#L414-L419)
+
+
+#### 对调用方的进程冻结
+这段代码是一个在 Linux 内核中的 binder 驱动的函数处理部分。这段代码中的函数处理了 BINDER_FREEZE 的 ioctl 请求。
+
+```c {5439-5498} {5487,5454,5481,5488} (https://github.com/torvalds/linux/blob/14f9643dc90adea074a0ffb7a17d337eafc6a5cc//drivers/android/binder.c?#L5439-L5498)
+	case BINDER_FREEZE: {
+		struct binder_freeze_info info;
+		struct binder_proc **target_procs = NULL, *target_proc;
+		int target_procs_count = 0, i = 0;
+
+		ret = 0;
+
+		if (copy_from_user(&info, ubuf, sizeof(info))) {
+			ret = -EFAULT;
+			goto err;
+		}
+
+		mutex_lock(&binder_procs_lock); // 使用互斥锁 binder_procs_lock 锁住进程列表 binder_procs，以保护其遍历过程。
+		hlist_for_each_entry(target_proc, &binder_procs, proc_node) { //  遍历 binder_procs 链表，对每个进程进行操作。
+			if (target_proc->pid == info.pid)  // 如果当前遍历到的进程的 pid 等于传入的 info 结构体中的 pid，则 target_procs_count 增加 1，用于计数符合条件的进程数量。
+				target_procs_count++;
+		}
+
+		if (target_procs_count == 0) { // 如果没有找到匹配的进程（target_procs_count == 0），则表示传入的 pid 无效，解锁互斥锁并返回 -EINVAL 错误。
+			mutex_unlock(&binder_procs_lock);
+			ret = -EINVAL;
+			goto err;
+		}
+
+		target_procs = kcalloc(target_procs_count,
+				       sizeof(struct binder_proc *),
+				       GFP_KERNEL);  // 动态分配一个指向 struct binder_proc 指针数组的内存，并将其赋值给 target_procs，用于保存找到的匹配进程的指针。
+
+		if (!target_procs) {
+			mutex_unlock(&binder_procs_lock);
+			ret = -ENOMEM;
+			goto err;
+		}
+
+		hlist_for_each_entry(target_proc, &binder_procs, proc_node) { // 第二次遍历
+			if (target_proc->pid != info.pid)
+				continue;
+
+			binder_inner_proc_lock(target_proc);
+			target_proc->tmp_ref++;
+			binder_inner_proc_unlock(target_proc);
+
+			target_procs[i++] = target_proc; // 在第二次遍历中，找到匹配进程后，对该进程执行一系列操作：增加 tmp_ref 计数，将进程指针添加到 target_procs 数组中，并对 i 计数器进行递增。
+		}
+		mutex_unlock(&binder_procs_lock);
+
+		for (i = 0; i < target_procs_count; i++) {
+			if (ret >= 0)
+				ret = binder_ioctl_freeze(&info,
+							  target_procs[i]);  // 对 target_procs 数组中的每个进程执行 binder_ioctl_freeze 函数，并将函数的返回值保存在 ret 变量中。同时，对每个进程执行 binder_proc_dec_tmpref 函数，递减其 tmp_ref 计数。
+
+			binder_proc_dec_tmpref(target_procs[i]);
+		}
+
+		kfree(target_procs);
+
+		if (ret < 0)
+			goto err;
+		break;
+	}
+```
+[/drivers/android/binder.c?#L5439-L5498](https://github.com/torvalds/linux/blob/14f9643dc90adea074a0ffb7a17d337eafc6a5cc//drivers/android/binder.c?#L5439-L5498)
+以上的核心逻辑，是通过遍历进程，对所有 binder 请求 的target 是当前 pid的进程，进行一个批量的处理。
+
+#### 更新 is_frozen 字段
+
+```c {5232-5261} {5232,5254} (https://github.com/torvalds/linux/blob/14f9643dc90adea074a0ffb7a17d337eafc6a5cc//drivers/android/binder.c?#L5232-L5261)
+static int binder_ioctl_freeze(struct binder_freeze_info *info,
+			       struct binder_proc *target_proc)
+{
+	int ret = 0;
+
+	if (!info->enable) { // 如果 info->enable 的值为 0（即禁用冻结），则将目标进程的 is_frozen 字段设置为 false，表示解冻该进程，并直接返回 0。
+		binder_inner_proc_lock(target_proc);
+		target_proc->sync_recv = false;
+		target_proc->async_recv = false;
+		target_proc->is_frozen = false;
+		binder_inner_proc_unlock(target_proc);
+		return 0;
+	}
+
+	/*
+	 * Freezing the target. Prevent new transactions by
+	 * setting frozen state. If timeout specified, wait
+	 * for transactions to drain.
+	 */
+	binder_inner_proc_lock(target_proc);
+	target_proc->sync_recv = false;
+	target_proc->async_recv = false;
+	target_proc->is_frozen = true; //  将目标进程的 is_frozen 字段设置为 true，表示冻结该进程。
+	binder_inner_proc_unlock(target_proc);
+
+	if (info->timeout_ms > 0) // 如果指定了超时时间，则等待直到该进程的所有事务（transactions）处理完成，或者等待超时。这里使用了 wait_event_interruptible_timeout 函数进行等待
+		ret = wait_event_interruptible_timeout(
+			target_proc->freeze_wait,
+			(!target_proc->outstanding_txns),
+			msecs_to_jiffies(info->timeout_ms));
+```
+[/drivers/android/binder.c?#L5232-L5261](https://github.com/torvalds/linux/blob/14f9643dc90adea074a0ffb7a17d337eafc6a5cc//drivers/android/binder.c?#L5232-L5261)
+
+最终实现将 binder 结构体中的 `is_frozen` 字段设为 true， 后续的 binder 请求，将通过判断这个字段，实现给调用者返回冻结状态。
+
+## 冻结的场景
+进程冻结是整机性能优化中的关键技术之一，正确应用该技术可以显著提升整机性能。然而，不当使用会带来问题，如应用切换到前台时没有及时解冻可能出现卡顿，影响用户体验，因此在优化时需要慎重考虑。
+
+在国内，应用数量众多，存在优先级和类别的差异。除主流应用外，其他应用占比较小。由于缺乏足够的政策监管，国内开发者采用多种技术手段相互竞争。因此，国内手机厂商针对冻结不仅局限于 CACHE APP，而是对所有应用进行状态模块的拆解。例如，应用在后台需要被冻结，但状态模块的判断会考虑一些特殊情况，如应用中使用桌面小组件、正在播放音频或涉及跨进程行为等。这样极致地使用 CPU 冻结，大幅提升系统性能。
+
+在国内特定环境下，一些主要应用如微信和 QQ 通常被主流厂商直接加入白名单，避免被冻结。因此，国内手机厂商针对冻结场景做了许多优化。
+
+确定何时冻结进程其实是一个复杂的问题，需要维护一个流程图来管理不同的场景。在本文中，我们只是简单介绍了原生的场景。后续我们将发布另一篇文章，专门讲解国内特定场景下的优化策略。
+
+### ADJ 更新
+在Android Framework中，`OomAdjuster` OOM资源管理是Android系统中重要的资源管理机制之一，它负责计算和调整进程的OOM（Out Of Memory）优先级。OOM优先级用于确定在系统内存不足时哪些进程会被杀死以释放内存资源。`OomAdjuster`考虑了进程的内存使用情况、可见性、重要性、运行状态和系统角色等因素，计算出每个进程的合适OOM优先级，并将其应用于系统的资源管理。
+
+**adj（Adjustment）**：在Linux内核中，进程的优先级由`adj`值来表示，也称为进程优先级值。在Android系统中，OOM优先级通过`adj`值来实现。Android系统定义了一系列的`adj`值范围，代表不同的OOM优先级。例如，`adj`值为-17代表前台进程，`adj`值为0代表可见进程，`adj`值为6代表服务进程等。系统根据`OomAdjuster`计算出的OOM优先级来设置进程的`adj`值，从而确定进程在内存不足时被杀死的概率。
+
+调整过程：`OomAdjuster`计算出进程的OOM优先级后，会将其映射到对应的`adj`值范围。然后，系统根据进程的`adj`值来决定哪些进程优先保留，哪些进程应该被终止以释放内存。`adj`值越小，表示进程优先级越高，越不容易被杀死。`OomAdjuster`的目的就是通过合理的计算和调整，使得系统能够更好地管理资源，提高系统性能和稳定性。
+
+在 `OomAdjuster` 更新 adj 的时候，会调用 `updateAppFreezeStateLSP` 函数用来更新应用的冻结状态：
+```java {3107-3131} {3125-3126} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java?#L3107-L3131)
+    private void updateAppFreezeStateLSP(ProcessRecord app, String oomAdjReason) {
+        if (!mCachedAppOptimizer.useFreezer()) {   // 是否使用冻结机制
+            return;
+        }
+
+        if (app.mOptRecord.isFreezeExempt()) { // 是否免冻结, 这里追溯过去的话，目前只有判断是否拥有安装器权限
+            return;
+        }
+
+        final ProcessCachedOptimizerRecord opt = app.mOptRecord;
+        // if an app is already frozen and shouldNotFreeze becomes true, immediately unfreeze
+        if (opt.isFrozen() && opt.shouldNotFreeze()) {  // 是否已经冻结并且不应该冻结
+            mCachedAppOptimizer.unfreezeAppLSP(app, oomAdjReason);
+            return;
+        }
+
+        final ProcessStateRecord state = app.mState;
+        // Use current adjustment when freezing, set adjustment when unfreezing.
+        if (state.getCurAdj() >= ProcessList.CACHED_APP_MIN_ADJ && !opt.isFrozen( )
+                && !opt.shouldNotFreeze()) {  // 当前 adj 大于最小冻结 adj 并且没有被冻结并且应该被冻结
+            mCachedAppOptimizer.freezeAppAsyncLSP(app);
+        } else if (state.getSetAdj() < ProcessList.CACHED_APP_MIN_ADJ) {
+            mCachedAppOptimizer.unfreezeAppLSP(app, oomAdjReason);
+        }
+    }
+```
+[/dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java?#L3107-L3131](https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java?#L3107-L3131)
+
+通过判断冻结功能是否开启、应用是否属于豁免的应用、应用是否已经被冻结、应用是否不应该被冻结。
+当做完基础的判断之后，主要通过判断应用当前的 adj 是否大于等于 900 (CACHE_APP) 来决定是否冻结应用，直接然后执行 `freezeAppAsyncLSP` 走冻结流程。
+
+
+
+### flush binder transactions 之后
+上述如果冻结过程有 binder 事务需要处理的时候哦。
+```java {1707-1721} {1709} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L1707-L1721)
+                try {
+                    if (freezeBinder(pid, true) != 0) {
+                        rescheduleFreeze(proc, "outstanding txns");
+                        return;
+                    }
+                } catch (RuntimeException e) {
+                    Slog.e(TAG_AM, "Unable to freeze binder for " + pid + " " + name);
+                    mFreezeHandler.post(() -> {
+                        synchronized (mAm) {
+                            proc.killLocked("Unable to freeze binder interface",
+                                    ApplicationExitInfo.REASON_FREEZER,
+                                    ApplicationExitInfo.SUBREASON_FREEZER_BINDER_IOCTL, true);
+                        }
+                    });
+                }
+```
+[/dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L1707-L1721](https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L1707-L1721)
 
 ## 解冻的场景
 
@@ -651,7 +812,7 @@ processes marked as frozen.
 [/dev/src/frameworks/base/services/core/java/com/android/server/am/AppProfiler.java?#L1095-L1106](https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/AppProfiler.java?#L1095-L1106)
 
 在 `AppProfiler` 中，会在 `trimMemoryUiHiddenIfNecessaryLSP` 函数中，判断应用是否需要进行内存整理，如果需要的话，会调用 `scheduleTrimMemoryLSP` 函数来进行内存整理：
-```java {1108-1123} {1108} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/AppProfiler.java?#L1108-L1123)
+```java {1108-1123} {1109,1116-1117} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/AppProfiler.java?#L1108-L1123)
     @GuardedBy({"mService", "mProcLock"})
     private void scheduleTrimMemoryLSP(ProcessRecord app, int level, String msg) {
         IApplicationThread thread;
@@ -673,7 +834,7 @@ processes marked as frozen.
 
 在 `scheduleTrimMemoryLSP` 函数中，会调用 `unfreezeTemporarily` 函数来解冻应用，然后调用 `scheduleTrimMemory` 函数来进行内存整理。
 
-```java {1036-1047} {1036} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L1036-L1047)
+```java {1036-1047} {1039,1043} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L1036-L1047)
     // This will ensure app will be out of the freezer for at least mFreezerDebounceTimeout.
     @GuardedBy("mAm")
     void unfreezeTemporarily(ProcessRecord app, String reason) {
@@ -697,50 +858,131 @@ processes marked as frozen.
 
 在 dump 进程信息的时候，会直接调用 `enableFreezer` 对整个 freezer 进行关闭，这部分逻辑Android11 上是直接调用 native 函数整个关闭，Android 13上就是持有了 `mAm` 嗯。
 
-在Android 11 的时候，Google 的解冻逻辑是这样的：
+在Android 11 的时候，是直接调用 native 的 enableFreezer， 而在Android13上， 在`CachedAppOptimizer`内进行了重写，对应用状态的把控更准确，废弃了原来的`enableFreezer` native 函数。
+```java {686-737} {686} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L686-L737)
+    public synchronized boolean enableFreezer(boolean enable) {
+        if (!mUseFreezer) {
+            return false;
+        }
 
-```java
-        private InterfaceCount[] getSortedInterfaceCounts(int maxToReturn) {
-            if (maxToReturn < 0) {
-                throw new IllegalArgumentException("negative interface count");
+        if (enable) {
+            mFreezerDisableCount--;
+
+            if (mFreezerDisableCount > 0) {
+                return true;
+            } else if (mFreezerDisableCount < 0) {
+                Slog.e(TAG_AM, "unbalanced call to enableFreezer, ignoring");
+                mFreezerDisableCount = 0;
+                return false;
             }
+        } else {
+            mFreezerDisableCount++;
 
-            Map<String, Integer> counts = new HashMap<>();
-            final ArrayList<WeakReference<BinderProxy>> proxiesToQuery =
-                    new ArrayList<WeakReference<BinderProxy>>();
-            synchronized (sProxyMap) {
-                for (ArrayList<WeakReference<BinderProxy>> a : mMainIndexValues) {
-                    if (a != null) {
-                        proxiesToQuery.addAll(a);
+            if (mFreezerDisableCount > 1) {
+                return true;
+            }
+        }
+
+        // Override is applied immediately, restore is delayed
+        synchronized (mAm) {
+            synchronized (mProcLock) {
+                mFreezerOverride = !enable;
+                Slog.d(TAG_AM, "freezer override set to " + mFreezerOverride);
+
+                mAm.mProcessList.forEachLruProcessesLOSP(true, process -> {
+                    if (process == null) {
+                        return;
                     }
+
+                    final ProcessCachedOptimizerRecord opt = process.mOptRecord;
+                    if (enable && opt.hasFreezerOverride()) {
+                        freezeAppAsyncLSP(process);
+                        opt.setFreezerOverride(false);
+                    }
+
+                    if (!enable && opt.isFrozen()) {
+                        unfreezeAppLSP(process, OomAdjuster.OOM_ADJ_REASON_NONE);
+
+                        // Set freezerOverride *after* calling unfreezeAppLSP (it resets the flag)
+                        opt.setFreezerOverride(true);
+                    }
+                });
+            }
+        }
+
+        return true;
+    }
+```
+[/dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L686-L737](https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L686-L737)
+
+### 发送和接收广播临时解冻
+#### 接收广播临时解冻
+```java {961-981} {961} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/BroadcastQueue.java?#L961-L981)
+        if (ordered) {
+            r.receiver = filter.receiverList.receiver.asBinder();
+            r.curFilter = filter;
+            filter.receiverList.curBroadcast = r;
+            r.state = BroadcastRecord.CALL_IN_RECEIVE;
+            if (filter.receiverList.app != null) {
+                // Bump hosting application to no longer be in background
+                // scheduling class.  Note that we can't do that if there
+                // isn't an app...  but we can only be in that case for
+                // things that directly call the IActivityManager API, which
+                // are already core system stuff so don't matter for this.
+                r.curApp = filter.receiverList.app;
+                filter.receiverList.app.mReceivers.addCurReceiver(r);
+                mService.enqueueOomAdjTargetLocked(r.curApp);
+                mService.updateOomAdjPendingTargetsLocked(
+                        OOM_ADJ_REASON_START_RECEIVER);
+            }
+        } else if (filter.receiverList.app != null) {
+            mService.mOomAdjuster.mCachedAppOptimizer.unfreezeTemporarily(filter.receiverList.app,
+                    OOM_ADJ_REASON_START_RECEIVER);
+        }
+```
+[/dev/src/frameworks/base/services/core/java/com/android/server/am/BroadcastQueue.java?#L961-L981](https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/BroadcastQueue.java?#L961-L981)
+
+#### 发送广播临时解冻
+```java {1343-1357} {1343} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/BroadcastQueue.java?#L1343-L1357)
+                    if (sendResult) {
+                        if (r.callerApp != null) {
+                            mService.mOomAdjuster.mCachedAppOptimizer.unfreezeTemporarily(
+                                    r.callerApp, OOM_ADJ_REASON_FINISH_RECEIVER);
+                        }
+                        try {
+                            if (DEBUG_BROADCAST) {
+                                Slog.i(TAG_BROADCAST, "Finishing broadcast [" + mQueueName + "] "
+                                        + r.intent.getAction() + " app=" + r.callerApp);
+                            }
+                            if (r.dispatchTime == 0) {
+                                // The dispatch time here could be 0, in case it's a parallel
+                                // broadcast but it has a result receiver. Set it to now.
+                                r.dispatchTime = now;
+                            }
+```
+[/dev/src/frameworks/base/services/core/java/com/android/server/am/BroadcastQueue.java?#L1343-L1357](https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/BroadcastQueue.java?#L1343-L1357)
+
+
+### 持有文件锁解冻
+
+```java {1835-1848} {1835} (https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L1835-L1848)
+        @GuardedBy({"mAm"})
+        @Override
+        public void onBlockingFileLock(int pid) {
+            if (DEBUG_FREEZER) {
+                Slog.d(TAG_AM, "Process (pid=" + pid + ") holds blocking file lock");
+            }
+            synchronized (mProcLock) {
+                ProcessRecord app = mFrozenProcesses.get(pid);
+                if (app != null) {
+                    Slog.i(TAG_AM, app.processName + " (" + pid + ") holds blocking file lock");
+                    unfreezeAppLSP(app, OomAdjuster.OOM_ADJ_REASON_NONE);
                 }
             }
-            // For gathering this debug output, we're making synchronous binder calls
-            // out of system_server to all processes hosting binder objects it holds a reference to;
-            // since some of those processes might be frozen, we don't want to block here
-            // forever. Disable the freezer.
-            Process.enableFreezer(false);
+        }
 ```
+[/dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L1835-L1848](https://github.com/10cl/fwkdev/blob/bfdf83c54ee15fdd53e2ed1f69e6f6f3f1cc1fbb//dev/src/frameworks/base/services/core/java/com/android/server/am/CachedAppOptimizer.java?#L1835-L1848)
 
-首先，函数getSortedInterfaceCounts接收一个maxToReturn参数，表示要返回的接口计数最大数量。
-如果maxToReturn小于0，将抛出IllegalArgumentException异常，防止参数传递错误。
+---------------
 
-函数创建一个HashMap对象counts用于保存每个接口的计数值。
-
-接着，函数获取所有Binder代理的弱引用，并存储在proxiesToQuery列表中。这些Binder代理是系统中所有进程拥有的，用于实现进程间通信（IPC）。
-之后，函数遍历proxiesToQuery列表，对每个Binder代理进行处理。在处理之前，为了避免在冻结进程时被阻塞，函数临时禁用了冻结机制（Process.enableFreezer(false)）。
-对于每个Binder代理，首先获取其接口描述符（Interface Descriptor）。如果获取过程中出现异常或接口描述符为空，将使用特定的字符串表示异常情况。
-
-然后，将每个接口描述符作为key，对counts中的计数值进行更新。如果该接口描述符是第一次出现，则将其计数值设为1，否则将其计数值加1。
-
-处理完所有Binder代理后，函数重新启用冻结机制（Process.enableFreezer(true)）。
-
-接下来，函数将counts中的数据转换为数组，并根据计数值进行降序排序。
-
-然后，函数计算要返回的接口计数数量，即returnCount，取maxToReturn和排序后数组长度的较小值。
-
-创建InterfaceCount数组ifaceCounts，用于保存排序后的接口计数信息。
-
-最后，函数将排序后的接口计数信息填充到ifaceCounts数组中，并将其返回。
-InterfaceCount是一个辅助类，用于保存接口描述符和计数值的信息。这样，函数返回的ifaceCounts数组包含了按照接口计数值降序排列的接口信息。这可以帮助开发人员和系统分析师了解系统中哪些接口使用频繁，以及哪些接口可能导致性能瓶颈或资源消耗。
-
+本文只是从软件开发的角度，简单梳理一下Android freeer 涉及到的模块以及基本概念，本文也在持续的更新中，如果你需要得到最新的更新或者有一些代码高亮，请访问: [Android13冻结进程分析：如何提高设备性能和用户体验](https://www.toscl.com/android_freezer/)

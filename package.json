@@ -4,7 +4,7 @@
     "vuepress": "^1.8.2",
     "vuepress-plugin-clean-urls": "^1.1.2",
     "vuepress-plugin-sitemap": "^2.3.1",
-    "markdown-it-quote": "^1.0.3"
+    "markdown-it-quote": "^1.0.4"
   },
   "scripts": {
     "source:dev": "vuepress dev source",
