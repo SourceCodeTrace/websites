@@ -2,7 +2,7 @@
 home: true
 heroImage: /logo.png
 actionText: Chrome Plugin
-actionLink: /
+actionLink: https://chrome.google.com/webstore/detail/chatdev/dopllopmmfnghbahgbdejnkebfcmomej
 features:
   - title: Interactive Social Experience
     details: Through the training of our advanced AI models, we've crafted an immersive virtual social world. From greetings to arguments, daily chit-chat to emotional exchanges, the AI intelligent agents simulate a full day in the lives of 25 diverse NPCs. Immerse yourself in unparalleled lifelike social interactions and experience the AI's emotions and responses firsthand.

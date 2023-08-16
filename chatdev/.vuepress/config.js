@@ -44,6 +44,9 @@ module.exports = {
           }
         },
         sidebar: {},
+        nav:  [
+          { text: "Introduce", link: `/introduce` },
+        ],
         lastUpdated: 'Last Updated'
       }
       ,
@@ -58,6 +61,9 @@ module.exports = {
           }
         },
         sidebar: {},
+        nav:  [
+          { text: "介绍", link: `/zh-hans/introduce` },
+        ],
         lastUpdated: '最后更新'
       },
       '/zh-hant/': {
@@ -71,6 +77,9 @@ module.exports = {
           }
         },
         sidebar: {},
+        nav:  [
+          { text: "介绍", link: `/zh-hant/introduce` },
+        ],
         lastUpdated: '最後更新'
       }
     },

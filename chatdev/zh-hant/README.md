@@ -2,7 +2,7 @@
 home: true
 heroImage: /logo.png
 actionText: Chrome Plugin
-actionLink: /
+actionLink: https://chrome.google.com/webstore/detail/chatdev/dopllopmmfnghbahgbdejnkebfcmomej
 features:
   - title: 互動式社交體驗
     details: 透過我們先進的AI模型訓練，我們打造了一個身臨其境的虛擬社交世界。從問候到爭吵，從日常閒聊到情感交流，AI智能體模擬了25個不同類型NPC的完整一天。沉浸在前所未有的逼真社交互動中，親身體驗AI的情感和回應。
