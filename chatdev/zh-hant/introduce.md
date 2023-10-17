@@ -1,61 +1,100 @@
-# ChatDev - 背景以AI小鎮為大模型整合插件
+<p align="center">
+    <img src="/images/chatdev.png">
+</p>
+<h1 align="center">ChatDev：可视化您的AI代理</h1>
 
-![ai_talk_xunfei.png](/images/ai_talk_xunfei.png)
+<div align="center">
 
-**ChatDev** 是一個整合多種大模型接口的**Chrome擴展程式**，主體以AI小鎮為背景，然後透過大模型的接口賦予每個NPC互動能力。
+[![author][author-image]][author-url]
+[![license][license-image]][license-url]
+[![release][release-image]][release-url]
+[![last commit][last-commit-image]][last-commit-url]
 
-您可以使用它來研究不同大模型在遊戲中的不同體驗，也可以透過選擇自己喜歡的大模型在AI小鎮中建立一套自己的生活記憶。
+##
 
-## 使用方法
+### ⚡️ 安装
 
-* 首次進入小鎮時，大模型會根據您的語言環境詢問您的**稱呼**，您只需在輸入框中輸入您的稱呼，大模型將在後續對話中使用它來稱呼您。
-* 使用鍵盤的**方向鍵**（上下左右）來控制玩家的移動。當玩家靠近NPC時，NPC會根據當前情景和歷史對話信息，發起新的對話（玩家會自動跟隨）。
-* 當控制玩家離開NPC一定距離後，NPC會總結當前的對話信息並將其存儲到瀏覽器的`LocalStorage`中，以供後續聊天時使用。
-* 當玩家靠近不同的區域（如健身房、大學等）或不同的位置（區域內的桌子、電腦、書架等），大模型會詢問您是否要記錄當前位置。您可以回答以記錄，記錄將在您離開該位置後**總結存儲**到`LocalStorage`中。
+<a href="https://chrome.google.com/webstore/detail/chatdev-visualize-your-ai/dopllopmmfnghbahgbdejnkebfcmomej?utm_source=github"><img src="https://user-images.githubusercontent.com/64502893/231991498-8df6dd63-727c-41d0-916f-c90c15127de3.png" width="200" alt="获取Chromium的ChatDev"></a>
 
-## 系統要求
+##
 
-* 您需要在Chrome或Edge瀏覽器中安裝擴展程式，並在相應的大模型官網上登錄您的帳號。
+[屏幕截图](#-屏幕截图) &nbsp;&nbsp;|&nbsp;&nbsp; [功能](#-功能) &nbsp;&nbsp;|&nbsp;&nbsp; [机器人](#-机器人) &nbsp;&nbsp;|&nbsp;&nbsp; [安装](#-安装) &nbsp;&nbsp;|&nbsp;&nbsp; [更改记录](#-更改记录)
 
-### 支持的大模型
+[author-image]: https://img.shields.io/badge/author-10cl-blue.svg
+[author-url]: https://github.com/10cl
+[license-image]: https://img.shields.io/github/license/10cl/chatdev?color=blue
+[license-url]: https://github.com/10cl/chatdev/blob/main/LICENSE
+[release-image]: https://img.shields.io/github/v/release/10cl/chatdev?color=blue
+[release-url]: https://github.com/10cl/chatdev/releases/latest
+[last-commit-image]: https://img.shields.io/github/last-commit/10cl/chatdev?label=last%20commit
+[last-commit-url]: https://github.com/10cl/chatdev/commits
 
-* ChatGPT
-* 訊飛星火認知大模型
-* ...
+</div>
 
-## 安裝方式
+**ChatDev** 是一个强大的 **Chrome扩展程序**，它集成了多个大型语言模型界面，提供多样化的对话体验。通过对Prompt-Flow任务序列的视觉定制，您不仅可以在游戏中探索不同大型模型的性能，还可以创建自己的任务执行流程。与虚拟NPC互动，丰富您的体验，并通过选择您喜欢的大型模型在AI城镇中创造独特的回忆。
 
-### 1. 從Chrome Web Store安裝
+## 📷 屏幕截图
+![game-prompt-flow.png](/images/game-prompt-flow.png)
+![chat-prompt-flow.gif](/images/chat-prompt-flow.gif)
 
-在 [Chrome Web Store](https://chrome.google.com/webstore/category/extensions) 中搜索 [ChatDev](https://chrome.google.com/webstore/detail/chatdev/dopllopmmfnghbahgbdejnkebfcmomej) 並點擊安裝。
+## ✨ 功能
+* 在一个应用程序中使用不同的聊天机器人，目前支持ChatGPT、新的Bing Chat、Google Bard、Claude和超过10个开源模型。
+* 通过Webapis的形式在浏览器中调用大型模型接口，无需编码能力。
+* 以游戏的形式与NPC互动，讨论真实需求。
+* 自定义NPC角色定义。
+* 自定义NPC行为和计划提示。
+* 自定义提示流程。
+* 一旦启用提示流程，只需用一句话表达您的需求，NPC将被自动选择以组成团队、执行任务，并以交互式游戏方式呈现。
 
-### 2. 手動安裝
+## 🤖 机器人
+支持的ChatGPT & iFlytek Spark & Bing & Bard & Claude & ChatGLM & Alpaca & Vicuna & Koala & Dolly & LLaMA & StableLM & OpenAssistant & ChatRWKV...
 
-1. 從Releases中下載 `chatdev1.0.1.zip`。
-2. 解壓文件。
-3. 在Chrome/Edge中，打開擴展程式頁面（`chrome://extensions` 或 `edge://extensions` ）。
-4. 啟用開發者模式。
-5. 將解壓後的文件夾拖到頁面上以導入（導入後請不要刪除文件夾）。
+## 🔨 安装
 
-### 3. 從源代碼構建
+### 1. 从Chrome Web Store安装
 
-* 克隆源代碼
-* 使用 `yarn install` 安裝依賴
-* 使用 `yarn build` 構建擴展程式
-* 按照“手動安裝”中的步驟將 `dist` 文件夾加載到瀏覽器
+在[Chrome Web Store](https://chrome.google.com/webstore/category/extensions)中搜索[ChatDev](https://chrome.google.com/webstore/detail/chatdev/dopllopmmfnghbahgbdejnkebfcmomej)，然后单击"安装"。
 
-## 更新日誌
+### 2. 手动安装
 
+1. 从发布页面下载 `chatdev1.1.1.zip`。
+2. 解压文件。
+3. 在Chrome/Edge中，打开扩展页面（`chrome://extensions`或`edge://extensions`）。
+4. 启用开发者模式。
+5. 将已解压的文件夹拖放到页面上以导入它（导入后不要删除文件夹）。
+
+### 3. 从源代码构建
+
+* 克隆源代码。
+* 运行 `yarn install` 安装依赖项。
+* 运行 `yarn build` 构建插件。
+* 按照"手动安装"中的步骤将`dist`文件夹加载到您的浏览器中。
+
+## 📜 更改记录
+* v1.1.1
+
+  * 提示流程双击可编辑节点。
+  * 导入或导出所有配置。
+  * 提示库共享。
+* v1.1.0
+
+  * 支持多个大型语言模型。
+  * 用户角色的自定义。
+  * 支持自定义提示（操作、计划等）。
+  * 自定义提示流程的新视觉编辑。
+  * 支持在聊天视图和游戏视图之间切换。
+  * 预定义的提示流程，允许一句话请求自动选择NPC，组建团队，执行任务，并以交互式游戏方式呈现。
+  * 设置按钮以自定义API和选择首选模型。
+  * 修复了iFlytek Spark模型的API问题。
 * v1.0.1
-  * 新增訊飛星火認知大模型支持
+
+  * 增加了对iFlytek Spark认知大型语言模型的支持。
 * v1.0.0
-  * 基於ChatGPT的AI小鎮插件首次發布
 
-## 鳴謝
+  * 基于ChatGPT的AI城镇插件的初始版本。
 
-我們衷心感謝以下項目，它們為我們提供了靈感和參考：
+## 🤝 致谢
 
-* [https://github.com/joonspk-research/generative_agents](https://github.com/joonspk-research/generative_agents)
-* [https://github.com/chathub-dev/chathub](https://github.com/chathub-dev/chathub)
+我们由衷感谢以下项目提供的灵感和参考资料：[generative_agents](https://github.com/joonspk-research/generative_agents)、[chathub](https://github.com/chathub-dev/chathub)。
 
-無論您想探索不同大模型的奇妙之處，還是想打造自己的虛擬小鎮生活，ChatDev都將是您的得力助手。立即安裝並開始探索吧！
+无论您想探索不同大型语言模型的奇迹还是创建自己的虚拟城市生活，ChatDev都将成为您可靠的助手。现在安装它，开始探索吧！
