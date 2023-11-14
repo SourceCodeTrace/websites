@@ -1,14 +1,16 @@
 const moment = require('moment')
 const langMap = {
   "zh-Hans": "zh-cn",
-  "zh-Hant": "zh-tw"
+  "zh-Hant": "zh-tw",
+  "ja": "ja",
+  "in": "in"
 }
 
 var timestampCache = {}
 
 module.exports = {
   base: '/',
-  title: 'ChatDev',
+  title: 'ChatDev IDE',
   markdown: {
     extendMarkdown: md => {
       const markdownQuote = require('markdown-it-quote')
@@ -21,15 +23,23 @@ module.exports = {
   locales: {
     '/': {
       lang: 'en',
-      description: 'Mastering the Virtual Social Realm, Shaping the Future of Intelligent Interactions.'
+      description: 'AI Town & PromptIDE & GPTs'
     },
     '/zh-hans/': {
       lang: 'zh-Hans',
-      description: '掌控虚拟社交世界，塑造智能互动未来。'
+      description: 'AI小镇 & PromptIDE & GPTs'
     },
     '/zh-hant/': {
       lang: 'zh-Hant',
-      description: '掌握虛擬社交世界，塑造智能互動未來。。'
+      description: 'AI Town & PromptIDE & GPTs'
+    },
+    '/ja/': {
+        lang: 'ja',
+        description: 'AI Town & PromptIDE & GPTs'
+    },
+    '/in/': {
+        lang: 'in',
+        description: 'AI Town & PromptIDE & GPTs'
     }
   },
   themeConfig: {
@@ -81,6 +91,38 @@ module.exports = {
           { text: "介绍", link: `/zh-hant/introduce` },
         ],
         lastUpdated: '最後更新'
+      },
+      '/ja/': {
+        selectText: '言語',
+        label: '日本語',
+        editLinkText: 'GitHubでこのページを編集する',
+        serviceWorker: {
+          updatePopup: {
+            message: "新しいコンテンツが利用可能です.",
+            buttonText: "更新"
+          }
+        },
+        sidebar: {},
+        nav:  [
+          { text: "紹介", link: `/ja/introduce` },
+        ],
+        lastUpdated: '最終更新'
+      },
+      '/in/': {
+        selectText: 'Bahasa',
+        label: 'Bahasa Indonesia',
+        editLinkText: 'Edit halaman ini di GitHub',
+        serviceWorker: {
+          updatePopup: {
+            message: "Konten baru tersedia.",
+            buttonText: "Muat Ulang"
+          }
+        },
+        sidebar: {},
+        nav:  [
+          { text: "Pengantar", link: `/in/introduce` },
+        ],
+        lastUpdated: 'Terakhir Diperbarui'
       }
     },
     displayAllHeaders: true,

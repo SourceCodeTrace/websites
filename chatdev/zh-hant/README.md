@@ -1,29 +1,27 @@
 ---
 home: true
-heroImage: /logo.png
-actionText: Chrome Plugin
+heroImage: /logo.jpg
+actionText: Chrome Extension
 actionLink: https://chrome.google.com/webstore/detail/chatdev/dopllopmmfnghbahgbdejnkebfcmomej
 features:
-  - title: 互動式社交體驗
-    details: 透過我們先進的AI模型訓練，我們打造了一個身臨其境的虛擬社交世界。從問候到爭吵，從日常閒聊到情感交流，AI智能體模擬了25個不同類型NPC的完整一天。沉浸在前所未有的逼真社交互動中，親身體驗AI的情感和回應。
-  - title: 玩家主導的敘事演進
-    details: 踏入一個獨特的遊戲世界，您將成為失控玩家的角色。通過操作鍵盤，您將在各種場景中與多樣化的NPC互動。每一次對話和行動都將影響故事的發展，塑造出多樣的情節走向。您的選擇將決定遊戲世界的走向，創造出真正獨特且個人化的體驗。
-  - title: 創新的零程式碼遊戲開發工具
-    details: 我們推出了一款革命性的零程式碼創作工具，讓您能夠在無需編寫程式的情況下設計虛擬角色並開發遊戲。通過預設的提示，您將引導虛擬人物的行為和反應，賦予他們生動的個性。此外，這款工具還能夠幫助您探索遊戲開發的新思路，輕鬆構建引人入勝的互動冒險
+  - title: ✨ Game Mode
+    details: This is a simulated AI town social environment, consisting of 25 NPCs with independent consciousness and a controlled player,all the roles you can customize, you can design a mathematician, a psychological analysis expert to solve various problems for you, you just need to define a reasonable Prompt role definition, the richness of the map will be completely controlled by you.
+  - title: ✨ Chat Mode
+    details: when you choose Chat Mode, and close the `GPTs` in the upper right corner, select your favorite large model on the left, Chat Mode will be a regular LLM UI, and all your inputs will be through the normal LLM interface, output the reply of the large model.
+  - title: ✨ PromptIDE
+    details: It contains Prompt Flow Editor, Prompt Flow Visualization, JavaScript Support, Export & Import. Prompt flow is a suite of development tools designed to streamline the end-to-end development cycle of LLM-based AI applications, from ideation, prototyping, testing, evaluation.    It makes prompt engineering much easier and enables you to build LLM apps with production quality.
 
-footer: © 2023 ChatDev
+footer: © 2023 ChatDev IDE
 ---
 
+## GPTs Example: Write a Website
+![gpts_write_a_website.png.png](/images/gpts_write_a_website.png)
 
 ::: tip
-ChatDev是一個先進的AI NPC遊戲研究平台，融合了多個高級模型介面，能在精心構建的模擬社交環境中精細地操控NPC之間的互動。
+ChatDev is an integrated multiple large language model Chrome Extension, It consists of three parts: **Game Mode**、**Chat Mode** and **Prompt IDE**.
 
-展望未來，我們的發展方向主要集中在兩個關鍵點：
+you can personalize these NPCs, customize the location's prompt, and build your GPTs with the visualize prompt editor, run GPTs let NPCs Multi-Persona Self-Collaboration.
 
-1. **拓展模型介面多樣性：** 我們致力於為平台引入更多類型的大型模型介面。這一拓展將使用戶能夠更深入地探索虛擬社交互動的複雜性，充分發揮不同模型的優勢，創造出真正沉浸式的體驗。
+It accelerates prompt engineering through **JavaScript Support** that allows implementing complex prompting techniques.
 
-2. **提升NPC智能和自主性：** 我們未來的願景是增強遊戲環境中虛擬NPC的自主性和智能性。通過賦予他們更強的多樣性，這些NPC將展現出更精細的行為和反應，使互動感覺更加逼真。這種追求更高自主性的發展方向與我們為提供前所未有的遊戲體驗的使命相一致。
-
-
-借助這些戰略舉措，ChatDev有望重新定義基於AI的遊戲領域，將虛擬互動推向前所未有的真實感和複雜性。
 :::
