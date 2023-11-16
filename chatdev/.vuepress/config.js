@@ -1,7 +1,7 @@
 const moment = require('moment')
 const langMap = {
-  "zh-Hans": "zh-cn",
-  "zh-Hant": "zh-tw",
+  "zh": "zh-cn",
+  "zh-tw": "zh-tw",
   "ja": "ja",
   "in": "in"
 }
@@ -25,12 +25,12 @@ module.exports = {
       lang: 'en',
       description: 'AI Town & PromptIDE & GPTs'
     },
-    '/zh-hans/': {
-      lang: 'zh-Hans',
+    '/zh/': {
+      lang: 'zh',
       description: 'AI小镇 & PromptIDE & GPTs'
     },
-    '/zh-hant/': {
-      lang: 'zh-Hant',
+    '/zh-tw/': {
+      lang: 'zh-tw',
       description: 'AI Town & PromptIDE & GPTs'
     },
     '/ja/': {
@@ -60,7 +60,7 @@ module.exports = {
         lastUpdated: 'Last Updated'
       }
       ,
-      '/zh-hans/': {
+      '/zh/': {
         selectText: '语言',
         label: '简体中文',
         editLinkText: '在 GitHub 上编辑此页',
@@ -72,11 +72,11 @@ module.exports = {
         },
         sidebar: {},
         nav:  [
-          { text: "介绍", link: `/zh-hans/introduce` },
+          { text: "介绍", link: `/zh/introduce` },
         ],
         lastUpdated: '最后更新'
       },
-      '/zh-hant/': {
+      '/zh-tw/': {
         selectText: '語言',
         label: '繁體中文',
         editLinkText: '在 GitHub 上編輯此頁',
@@ -88,7 +88,7 @@ module.exports = {
         },
         sidebar: {},
         nav:  [
-          { text: "介绍", link: `/zh-hant/introduce` },
+          { text: "介绍", link: `/zh-tw/introduce` },
         ],
         lastUpdated: '最後更新'
       },
