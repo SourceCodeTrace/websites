@@ -56,6 +56,7 @@ module.exports = {
         sidebar: {},
         nav:  [
           { text: "Introduce", link: `/introduce` },
+          { text: "Discord", link: `https://discord.com/invite/fdjWfgGPjb` },
         ],
         lastUpdated: 'Last Updated'
       }
@@ -73,6 +74,7 @@ module.exports = {
         sidebar: {},
         nav:  [
           { text: "介绍", link: `/zh/introduce` },
+          { text: "Discord", link: `https://discord.com/invite/fdjWfgGPjb` },
         ],
         lastUpdated: '最后更新'
       },
@@ -89,6 +91,7 @@ module.exports = {
         sidebar: {},
         nav:  [
           { text: "介绍", link: `/zh-tw/introduce` },
+          { text: "Discord", link: `https://discord.com/invite/fdjWfgGPjb` },
         ],
         lastUpdated: '最後更新'
       },
@@ -105,6 +108,7 @@ module.exports = {
         sidebar: {},
         nav:  [
           { text: "紹介", link: `/ja/introduce` },
+          { text: "Discord", link: `https://discord.com/invite/fdjWfgGPjb` },
         ],
         lastUpdated: '最終更新'
       },
@@ -121,6 +125,7 @@ module.exports = {
         sidebar: {},
         nav:  [
           { text: "Pengantar", link: `/in/introduce` },
+          { text: "Discord", link: `https://discord.com/invite/fdjWfgGPjb` },
         ],
         lastUpdated: 'Terakhir Diperbarui'
       }

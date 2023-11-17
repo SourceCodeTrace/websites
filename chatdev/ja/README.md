@@ -1,8 +1,10 @@
 ---
 home: true
 heroImage: /logo.jpg
-actionText: Chrome Extension
+actionText: Add to Chrome
 actionLink: https://chrome.google.com/webstore/detail/chatdev/dopllopmmfnghbahgbdejnkebfcmomej
+actionText2: Add to Edge
+actionLink2: https://microsoftedge.microsoft.com/addons/detail/ceoneifbmcdiihmgfjeodiholmbpmibm?utm_source=toscl
 features:
   - title: ✨ Game Mode
     details: This is a simulated AI town social environment, consisting of 25 NPCs with independent consciousness and a controlled player,all the roles you can customize, you can design a mathematician, a psychological analysis expert to solve various problems for you, you just need to define a reasonable Prompt role definition, the richness of the map will be completely controlled by you.

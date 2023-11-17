@@ -1,8 +1,10 @@
 ---
 home: true
 heroImage: /logo.jpg
-actionText: Chrome 拓展
+actionText: Add to Chrome
 actionLink: https://chrome.google.com/webstore/detail/chatdev/dopllopmmfnghbahgbdejnkebfcmomej
+actionText2: Add to Edge
+actionLink2: https://microsoftedge.microsoft.com/addons/detail/ceoneifbmcdiihmgfjeodiholmbpmibm?utm_source=toscl
 features:
   - title: ✨ 游戏模式
     details: 这是一个模拟的AI城镇社交环境，由25个具有独立意识的NPC和一个可控的玩家组成，所有角色都可以自定义，你可以设计一个数学家，一个心理分析专家来解决你的各种问题，你只需要定义一个合理的Prompt角色定义，地图的丰富程度将完全由你控制。
