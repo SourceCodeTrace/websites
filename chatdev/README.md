@@ -1,10 +1,8 @@
 ---
 home: true
 heroImage: /logo.jpg
-actionText: Add to Chrome
-actionLink: https://chrome.google.com/webstore/detail/chatdev/dopllopmmfnghbahgbdejnkebfcmomej
-actionText2: Add to Edge
-actionLink2: https://microsoftedge.microsoft.com/addons/detail/ceoneifbmcdiihmgfjeodiholmbpmibm?utm_source=toscl
+actionText: Chrome Extension
+actionLink: https://chromewebstore.google.com/detail/chatdev-ide-%E3%81%82%E3%81%AA%E3%81%9F%E3%81%AEai%E3%82%A8%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%B3%E3%83%88%E3%82%92/dopllopmmfnghbahgbdejnkebfcmomej?hl=ja
 features:
   - title: ✨ Game Mode
     details: This is a simulated AI town social environment, consisting of 25 NPCs with independent consciousness and a controlled player,all the roles you can customize, you can design a mathematician, a psychological analysis expert to solve various problems for you, you just need to define a reasonable Prompt role definition, the richness of the map will be completely controlled by you.
@@ -15,15 +13,6 @@ features:
 
 footer: © 2023 ChatDev IDE
 ---
-
-## GPTs Example: Write a Website
-![gpts_write_a_website.png.png](/images/gpts_write_a_website.png)
-
 ::: tip
-ChatDev IDE is an integrated multiple large language model Chrome Extension, It consists of three parts: **Game Mode**、**Chat Mode** and **Prompt IDE**.
-
-you can personalize these NPCs, customize the location's prompt, and build your GPTs with the visualize prompt editor, run GPTs let NPCs Multi-Persona Self-Collaboration.
-
-It accelerates prompt engineering through **JavaScript Support** that allows implementing complex prompting techniques.
-
+ChatDev IDE is an tools for building your ai agent, Whether it's NPCs in games or powerful agent tools, you can design what you want for this platform.
 :::
