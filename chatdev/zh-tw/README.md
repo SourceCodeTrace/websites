@@ -1,10 +1,8 @@
 ---
 home: true
 heroImage: /logo.jpg
-actionText: Add to Chrome
-actionLink: https://chrome.google.com/webstore/detail/chatdev/dopllopmmfnghbahgbdejnkebfcmomej
-actionText2: Add to Edge
-actionLink2: https://microsoftedge.microsoft.com/addons/detail/ceoneifbmcdiihmgfjeodiholmbpmibm?utm_source=toscl
+actionText: 添加到Chrome
+actionLink: https://chromewebstore.google.com/detail/chatdev-ide-%E5%BB%BA%E6%A7%8B%E6%82%A8%E7%9A%84%E6%99%BA%E8%83%BD%E9%AB%94/dopllopmmfnghbahgbdejnkebfcmomej?hl=zh-tw
 features:
   - title: ✨ 遊戲模式
     details: 這是一個模擬的AI城鎮社交環境，由25個具有獨立意識的NPC和一個可控的玩家組成，所有角色都可以自定義，你可以設計一個數學家，一個心理分析專家來解決你的各種問題，你只需要定義一個合理的Prompt角色定義，地圖的豐富程度將完全由你控制。
@@ -16,13 +14,6 @@ features:
 footer: © 2023 ChatDev IDE
 ---
 
-## GPTs 示例: 一句話生成一個網站
-![gpts_write_a_website.png.png](/images/gpts_write_a_website.png)
-
-::: tip
-ChatDev IDE是一個集成多個大語言模型的Chrome拓展，它由三部分組成：**遊戲模式**、**聊天模式**和**Prompt IDE**。
-
-你可以個性化這些NPC，自定義位置的提示，用可視化的提示編輯器構建你的GPTs，運行GPTs讓NPCs自我協作。
-
-通過**JavaScript Support**讓你的提示工程更高級，可以實現複雜的提示技術。
+::: tip 
+ChatDev IDE是一個用於構建智能體的集成開發環境，無論是遊戲中的NPC還是強大的智能體工具，您都可以在這個平台設計。
 :::

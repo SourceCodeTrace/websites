@@ -23,23 +23,23 @@ module.exports = {
   locales: {
     '/': {
       lang: 'en',
-      description: 'AI Town & PromptIDE & GPTs'
+      description: 'Personalize your AI Town and build your GPTs with PromptIDE'
     },
     '/zh/': {
       lang: 'zh',
-      description: 'AI小镇 & PromptIDE & GPTs'
+      description: '个性化你的AI小镇并通过提示词工程开发环境构建你的智能体'
     },
     '/zh-tw/': {
       lang: 'zh-tw',
-      description: 'AI Town & PromptIDE & GPTs'
+      description: '個性化你的AI小鎮並透過提示詞工程開發環境構建你的智能體'
     },
     '/ja/': {
         lang: 'ja',
-        description: 'AI Town & PromptIDE & GPTs'
+        description: 'AIタウンを個性化し、PromptIDEを使用してあなたのGPTsを構築します'
     },
     '/in/': {
         lang: 'in',
-        description: 'AI Town & PromptIDE & GPTs'
+        description: 'Personalisasi Kota AI Anda dan bangun GPTs Anda melalui PromptIDE'
     }
   },
   themeConfig: {
@@ -57,6 +57,7 @@ module.exports = {
         nav:  [
           { text: "Introduce", link: `/introduce` },
           { text: "Discord", link: `https://discord.com/invite/fdjWfgGPjb` },
+          { text: "Youtube", link: `https://www.youtube.com/channel/UCWk47fQ5eM6qKHXcWkr0TsQ` },
         ],
         lastUpdated: 'Last Updated'
       }
@@ -74,7 +75,8 @@ module.exports = {
         sidebar: {},
         nav:  [
           { text: "介绍", link: `/zh/introduce` },
-          { text: "Discord", link: `https://discord.com/invite/fdjWfgGPjb` },
+          { text: "下载安装", link: `https://gitee.com/toscl/chatdev/releases/download/chatdev1.3.0/chatdev1.3.0.zip` },
+          { text: "哔哩哔哩", link: `https://space.bilibili.com/442015702` },
         ],
         lastUpdated: '最后更新'
       },
@@ -92,6 +94,7 @@ module.exports = {
         nav:  [
           { text: "介绍", link: `/zh-tw/introduce` },
           { text: "Discord", link: `https://discord.com/invite/fdjWfgGPjb` },
+          { text: "Youtube", link: `https://www.youtube.com/channel/UCWk47fQ5eM6qKHXcWkr0TsQ` },
         ],
         lastUpdated: '最後更新'
       },
@@ -109,6 +112,7 @@ module.exports = {
         nav:  [
           { text: "紹介", link: `/ja/introduce` },
           { text: "Discord", link: `https://discord.com/invite/fdjWfgGPjb` },
+          { text: "Youtube", link: `https://www.youtube.com/channel/UCWk47fQ5eM6qKHXcWkr0TsQ` },
         ],
         lastUpdated: '最終更新'
       },
@@ -126,6 +130,7 @@ module.exports = {
         nav:  [
           { text: "Pengantar", link: `/in/introduce` },
           { text: "Discord", link: `https://discord.com/invite/fdjWfgGPjb` },
+          { text: "Youtube", link: `https://www.youtube.com/channel/UCWk47fQ5eM6qKHXcWkr0TsQ` },
         ],
         lastUpdated: 'Terakhir Diperbarui'
       }
