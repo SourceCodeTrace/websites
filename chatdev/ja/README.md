@@ -11,7 +11,7 @@ features:
   - title: ✨ PromptIDE
     details: Prompt Flow Editor、Prompt Flow Visualization、JavaScript Support、Export & Importを含みます。Prompt flowは、LLMベースのAIアプリケーションのエンドツーエンドの開発サイクルを、構想、プロトタイピング、テスト、評価から簡素化するための開発ツールキットです。それはプロンプトエンジニアリングをはるかに簡単にし、あなたが生産品質のLLMアプリケーションを構築することを可能にします。
 
-footer: © 2023 ChatDev IDE
+footer: © 2023 ChatDev
 ---
 
 ::: tip

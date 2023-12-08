@@ -11,7 +11,7 @@ features:
   - title: ✨ PromptIDE
     details: Ini berisi Prompt Flow Editor, Prompt Flow Visualization, JavaScript Support, Export & Import. Aliran prompt adalah seperangkat alat pengembangan yang dirancang untuk menyederhanakan siklus pengembangan ujung-ke-ujung aplikasi AI berbasis LLM, dari ideasi, prototyping, pengujian, evaluasi. Ini membuat rekayasa prompt jauh lebih mudah dan memungkinkan Anda membangun aplikasi LLM dengan kualitas produksi.
 
-footer: © 2023 ChatDev IDE
+footer: © 2023 ChatDev
 ---
 
 ::: tip

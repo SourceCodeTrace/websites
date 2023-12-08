@@ -10,7 +10,7 @@ var timestampCache = {}
 
 module.exports = {
   base: '/',
-  title: 'ChatDev IDE',
+  title: 'ChatDev',
   markdown: {
     extendMarkdown: md => {
       const markdownQuote = require('markdown-it-quote')

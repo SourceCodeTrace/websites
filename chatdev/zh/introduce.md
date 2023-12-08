@@ -15,11 +15,13 @@ sidebar: auto
 [![last commit][last-commit-image]][last-commit-url]
 [![discord][discord-image]][discord-url]
 
+[英语](README.md) &nbsp;&nbsp;|&nbsp;&nbsp; [印度尼西亚语](README_IN.md) &nbsp;&nbsp;|&nbsp;&nbsp; 简体中文 &nbsp;&nbsp;|&nbsp;&nbsp; [繁体中文](README_ZH-TW.md) &nbsp;&nbsp;|&nbsp;&nbsp; [日本语](README_JA.md)
+
 <a href="https://chrome.google.com/webstore/detail/chatdev-visualize-your-ai/dopllopmmfnghbahgbdejnkebfcmomej?utm_source=github"><img src="/images/chrome-logo.png" width="200" alt="为Chromium获取ChatDev"></a>
 <a href="https://microsoftedge.microsoft.com/addons/detail/ceoneifbmcdiihmgfjeodiholmbpmibm?utm_source=github"><img src="/images/edge-logo.png" width="160" alt="为Microsoft Edge获取ChatDev"></a>
 
 
-[截图](#-截图) &nbsp;&nbsp;|&nbsp;&nbsp; [游戏模式](#-游戏模式) &nbsp;&nbsp;|&nbsp;&nbsp; [聊天模式](#-聊天模式) &nbsp;&nbsp;|&nbsp;&nbsp; [PromptIDE](#-prompt-ide) &nbsp;&nbsp;|&nbsp;&nbsp; [机器人](#-) &nbsp;&nbsp;|&nbsp;&nbsp; [安装](#-installation) &nbsp;&nbsp;|&nbsp;&nbsp; [更新日志](#-changelog)
+[截图](#-截图) &nbsp;&nbsp;|&nbsp;&nbsp; [游戏模式](#-游戏模式) &nbsp;&nbsp;|&nbsp;&nbsp; [聊天模式](#-聊天模式) &nbsp;&nbsp;|&nbsp;&nbsp; [PromptIDE](#-prompt-ide) &nbsp;&nbsp;|&nbsp;&nbsp; [机器人](#-机器人) &nbsp;&nbsp;|&nbsp;&nbsp; [安装](#-安装) &nbsp;&nbsp;
 
 [author-image]: https://img.shields.io/badge/作者-10cl-blue.svg
 [author-url]: https://github.com/10cl
@@ -34,11 +36,11 @@ sidebar: auto
 
 </div>
 
-ChatDev IDE是一个集成了多个AI大模型的提示词工程开发环境，这个开发环境中包含：**游戏模式**、**聊天模式**和**智能体编辑器**。
+ChatDev IDE 是一个集成了多个大型语言模型的浏览器扩展程序，它由三部分组成：**游戏模式**、**聊天模式**和**Prompt IDE**。
 
-您可以个性化AI小镇中的游戏角色以及标记位置上的角色定义提示词，也可以使用可视化的**智能体编辑器**编辑你自己的智能体，通过运行智能体，实现让小镇中的游戏角色合作一起完成任务。
+您可以个性化游戏中的NPC，自定义位置的提示词，并使用可视化的GPTs编辑器构建您的GPTs，让NPC多角色自我协作。
 
-只需要了解略微的编程概念，你就可以通过**JavaScript**语言，让你的智能体实现更复杂的任务。
+它通过**JavaScript支持**从而让你可以实现更复杂的AI Agent流程。
 
 >从4月份斯坦福AI小镇诞生之后，我开启了这个项目，我以初学者的心态来学习智能体，阅读了一些智能体相关的论文，发现其中最有意思的部分其实中学生也能轻松理解，因为智能体时代的核心就是自然语言，怎么给大模型定义角色，怎么和大模型对话，如何让大模型多轮对话来实现你的需求，所以这个项目的目标是让中学生都会使用，从教育目的上而言，中学生也能在AI时代通过编辑智能体来提升一些逻辑思维。
 
@@ -47,20 +49,20 @@ ChatDev IDE是一个集成了多个AI大模型的提示词工程开发环境，�
 ![gpts_write_a_website.png.png](/images/gpts_write_a_website.png)
 
 ## 📢 简介
-*  游戏模式：这是一个由25个游戏角色组成的AI小镇，你可以个性化AI小镇中的游戏角色以及标记位置上的角色定义提示词，然后通过控制玩家和游戏角色进行交互。
-*  现成的智能体：你可以通过选择你喜欢的智能体，直接选择导入到开发环境中，然后启动就可以使用了，并且可以再次重新编辑这个智能体。
-*  智能体开发环境：支持编辑的时候提供游戏角色名称和提示词自动补全功能，双屏显示 编辑智能体结构的页面 和 提示词编辑页面，可视化展示智能体结构，JavaScript支持。
-*  除了支持国外的几个大模型，目前支持了国内的阿里千问、讯飞星火、百川智能作为聊天接口，主要通过浏览器支持，你只需要登录了对应的网站即可使用。
+* 游戏模式：在AI镇社会模拟中，您可以自定义这些NPC和位置标记。
+* GPTs支持：从GPTs社区导入或自定义您的GPT。
+* PromptIDE：自动完成，双屏显示，可视化PromptFlow，JavaScript节点支持
+* 不仅仅是ChatGpt，还有Bing Chat，Google Bard，Claude，千问，讯飞等超过10种开源模型。
 
 ## ✨ 游戏模式
-这是大部分人最感兴趣的部分，在游戏模式中，你可以自定义所有的游戏角色，你可以给这些游戏角色定义一个数学家、心理学家等等为你解决各类问题或者只是聊天需求，只需要通过定义合理的提示词即可。
+这是最令人兴奋的部分，您可以自定义所有角色，您可以设计数学家，心理分析专家为您解决各种问题，您只需要定义合理的提示角色定义，地图的丰富度将完全由您控制，如果您对设计感到满意，您也可以与我们分享，我们会将其推荐给其他用户。
 在游戏模式中，您可以在左侧选择您喜欢的大型模型，在地图上，通过方向键或鼠标控制NPC的动作，当您靠近NPC或到达标记位置时，NPC会主动触发冷启动响应，或在下方输入框中主动输入您的聊天内容。
-游戏基于一个模拟社交环境中的AI小镇，您可以靠近NPC或走到特定位置，通过输入与NPC交流或在特定位置与自己聊天。
+游戏基于模拟的AI镇社会环境，您可以靠近NPC或走到特定位置，通过输入与NPC交流或在特定位置与自己聊天。
 
 - **位置提示**：通过描述标记位置的提示让玩家与自己聊天
 - **NPC角色提示**：通过描述NPC的提示让玩家与NPC聊天，实现玩家与NPC之间的自我介绍。
 - **记忆**：您的聊天将被本地存储，您可以通过悬停鼠标查看标记位置或NPC的历史聊天记录。
-- **GPT**：从社区导入GPT或在PromptIDE中自定义Prompt Flow以实现新的GPT，运行GPT让NPC实现多人自我协作完成任务
+- **GPTs**：从社区导入GPTs或在PromptIDE中自定义Prompt Flow以实现新的GPT，运行GPT让NPC实现多人自我协作完成任务
 
 ### 社会模拟
 ![social_simulation.png](/images/social_simulation.png)
@@ -247,19 +249,19 @@ AI镇中总共有**25**个NPC。这些NPC的行为轨迹是预定义的，但您
 
 > 要求：1. 简洁：因为这是一个聊天场景，您可以要求大型模型尽可能简洁
 
-### 智能体
+### GPTs
 
-智能体是一个大型语言模型，您可以从社区导入GPT或在PromptIDE中自定义Prompt Flow以实现新的GPT，运行GPT让NPC实现多人自我协作完成任务。 在智能体中，如果智能体的Prompt Flow定义了角色(`npc`，详情见[流程](#flows))，并将地图中的NPC分配给该角色，那么它们将在地图上聚集在一起举行研讨会并执行GPT的完整过程。如果没有定义角色，您可以在聊天模式中查看完整的执行过程，并以通常的LLM方式进行对话。
+GPTs是一个大型语言模型，您可以从社区导入GPTs或在PromptIDE中自定义Prompt Flow以实现新的GPTs，运行GPTs让NPC实现多人自我协作完成任务。 在GPTs中，如果GPTs的Prompt Flow定义了角色(`npc`，详情见[流程](#flows))，并将地图中的NPC分配给该角色，那么它们将在地图上聚集在一起举行研讨会并执行GPTs的完整过程。如果没有定义角色，您可以在聊天模式中查看完整的执行过程，并以通常的LLM方式进行对话。
 
 ## ✨ 聊天模式
 
-当您选择聊天模式，并关闭右上角的`GPT`，在左侧选择您喜欢的大型模型时，聊天模式将是一个常规的LLM用户界面，并且所有的输入都将通过正常的LLM界面，输出大型模型的回复。
+当您选择聊天模式，并关闭右上角的`GPTs`，在左侧选择您喜欢的大型模型时，聊天模式将是一个常规的LLM用户界面，并且所有的输入都将通过正常的LLM界面，输出大型模型的回复。
 
 ![chat_mode.png](/images/chat_mode.png)
 
-### GPT社区
+### GPTs社区
 
-您可以从社区导入GPT，您也可以与他人分享您的GPT。 ![gpts_community.png](/images/gpts_community.png)
+您可以从社区导入GPTs，您也可以与他人分享您的GPTs。 ![gpts_community.png](/images/gpts_community.png)
 
 ### 聊天历史
 
@@ -277,8 +279,8 @@ Prompt流是一套旨在简化LLM为基础的AI应用的端到端开发周期的
 
 * **Prompt Flow 编辑器**：用于编辑`Prompt Flow`的YAML文件以及节点的提示内容和JavaScript脚本
 * **Prompt Flow 可视化**：通过Prompt Flow节点的执行过程的可视化，当执行到某个节点时，节点的颜色会改变
-* **JavaScript 支持**：通过JavaScript脚本，您可以发挥您的创造力，实现不同NPC之间的协作，以实现您的GPT
-* **导出 & 导入**：您可以导入其他优秀的GPT或分享您的GPT
+* **JavaScript 支持**：通过JavaScript脚本，您可以发挥您的创造力，实现不同NPC之间的协作，以实现您的GPTs
+* **导出 & 导入**：您可以导入其他优秀的GPTs或分享您的GPTs
 
 ### PromptFow 编辑器
 
@@ -374,7 +376,7 @@ JavaScript是PromptFlow中用于实现复杂提示技术的强大语言。它使
 
 你可以将你的prompt flow导出为json文件，并将其导入到其他设备。 它包含了你的prompt flow的所有信息，包括提示、JavaScript函数和YAML文件。
 
-### 智能体 示例
+### GPTs 示例
 
 我们的示例还应该给你一个如何使用它的想法：
 
