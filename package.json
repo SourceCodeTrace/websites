@@ -12,6 +12,8 @@
     "www:dev": "vuepress dev www",
     "www:build": "vuepress build www",
     "chatdev:dev": "vuepress dev chatdev",
-    "chatdev:build": "vuepress build chatdev"
+    "chatdev:build": "vuepress build chatdev",
+    "promptflowx:dev": "vuepress dev promptflowx",
+    "promptflowx:build": "vuepress build promptflowx"
   }
 }
