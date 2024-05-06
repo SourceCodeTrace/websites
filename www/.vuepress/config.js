@@ -21,22 +21,8 @@ module.exports = {
   themeConfig: {
     locales: {
       '/': {
-        selectText: '语言',
-        label: '简体中文',
-        lang: 'zh-Hans',
-        serviceWorker: {
-          updatePopup: {
-            message: "发现新内容可用.",
-            buttonText: "刷新"
-          }
-        },
-        sidebar: {
-        },
-        nav:  [
-          { text: "AI Agent", link: `/index_ai_agent` },
-          { text: "Android系统", link: `/index_android_framework` },
-        ],
-        lastUpdated: '最后更新'
+        lang: 'en',
+        description: 'Building for AI Agent'
       }
     },
     displayAllHeaders: true,
